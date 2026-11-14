@@ -69,65 +69,52 @@ export default {
     ],
   },
   glassBox: {
-    label: 'Vì sao RotexAI',
-    title: 'Hộp kính, không phải hộp đen',
-    lead: 'Các nền tảng tạo ứng dụng AI khác giao mã nguồn rồi yêu cầu chủ doanh nghiệp tin tưởng.',
-    leadStrong: 'RotexAI hiển thị các quy trình ứng dụng đang chạy, để chủ doanh nghiệp tự kiểm tra.',
-    them: 'Nền tảng tạo ứng dụng bằng AI thông thường',
-    themCaption: 'Mã sinh tự động. Chủ doanh nghiệp không đọc được, nên chỉ bấm thử và hy vọng nó chạy.',
-    us: 'RotexAI',
-    usCaption: 'Quy trình mà ứng dụng thực sự chạy, bằng ngôn ngữ chủ doanh nghiệp kiểm tra được.',
-    wf: {
-      name: 'Duyệt nhập hàng',
-      version: 'v2',
-      live: 'Đang chạy',
-      steps: [
-        {
-          who: 'Mai · nhân viên',
-          what: 'Yêu cầu bột mì',
-          data: 'Yêu cầu nhập hàng',
-        },
-        {
-          who: 'Anna · chủ sở hữu',
-          what: 'Duyệt?',
-          no: 'Không: báo Mai lý do',
-        },
-        {
-          who: 'Ứng dụng',
-          what: 'Gửi đơn hàng',
-          data: 'Nhà cung cấp',
-        },
-      ],
-      yes: 'Có',
-      logLabel: 'Nhật ký chạy',
-      log: [
-        {
-          at: '18:02',
-          text: 'Mai yêu cầu 20 bao bột mì',
-        },
-        {
-          at: '18:05',
-          text: 'Anna đã duyệt',
-        },
-        {
-          at: '18:05',
-          text: 'Đã gửi đơn cho nhà cung cấp',
-        },
-      ],
+    titleA: 'Hộp kính,',
+    titleB: 'không phải hộp đen.',
+    lead: 'Thấy rõ ứng dụng làm gì, trước khi nó chạy.',
+    black: {
+      status: 'Đang chạy…',
+      title: 'Hộp đen',
+      line: 'Nền tảng khác: bạn phải tin AI.',
     },
+    glass: {
+      status: 'Đang chạy · Duyệt nhập hàng',
+      title: 'Hộp kính',
+      line: 'RotexAI: bạn tự kiểm tra nghiệp vụ.',
+    },
+    steps: [
+      {
+        who: 'Mai',
+        what: 'Yêu cầu nhập hàng',
+      },
+      {
+        who: 'Anna',
+        what: 'Duyệt',
+      },
+      {
+        who: 'Ứng dụng',
+        what: 'Gửi nhà cung cấp',
+      },
+    ],
+    logLabel: 'Nhật ký chạy',
+    log: [
+      {
+        at: '18:02',
+        text: 'Mai yêu cầu 20 bao bột mì',
+      },
+      {
+        at: '18:05',
+        text: 'Anna đã duyệt',
+      },
+      {
+        at: '18:05',
+        text: 'Đã gửi đơn cho nhà cung cấp',
+      },
+    ],
     points: [
-      {
-        title: 'Đọc trước khi xây dựng',
-        line: 'Kế hoạch liệt kê mọi quy trình và bảng.',
-      },
-      {
-        title: 'Mọi thay đổi đều được ghi lại',
-        line: 'Dữ liệu chỉ di chuyển qua quy trình: ai, cái gì, khi nào.',
-      },
-      {
-        title: 'Cập nhật kèm so sánh phiên bản',
-        line: 'Từ phiên bản 1 lên 2, áp dụng sau khi được đồng ý.',
-      },
+      'Đọc trước khi xây',
+      'Ghi lại mọi thay đổi',
+      'So sánh phiên bản',
     ],
   },
   team: {

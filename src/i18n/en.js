@@ -69,35 +69,52 @@ export default {
     ],
   },
   glassBox: {
-    label: 'Why RotexAI',
-    title: 'A glass box, not a black box',
-    lead: 'Other AI app builders hand over code and ask the owner to trust it.',
-    leadStrong: 'RotexAI shows the workflows the app runs, so the owner can check them.',
-    them: 'Typical AI app builder',
-    themCaption: 'Generated code. The owner cannot read it, so they click around and hope it works.',
-    us: 'RotexAI',
-    usCaption: 'The workflow the app actually runs, in words the owner can check.',
-    wf: {
-      name: 'Restock approval',
-      version: 'v2',
-      live: 'Running',
-      steps: [
-        { who: 'Mai · staff', what: 'Requests flour', data: 'Restock requests' },
-        { who: 'Anna · owner', what: 'Approve?', no: 'No: tell Mai why' },
-        { who: 'The app', what: 'Sends the order', data: 'Suppliers' },
-      ],
-      yes: 'Yes',
-      logLabel: 'Run log',
-      log: [
-        { at: '18:02', text: 'Mai requested 20 bags of flour' },
-        { at: '18:05', text: 'Anna approved' },
-        { at: '18:05', text: 'Order sent to the supplier' },
-      ],
+    titleA: 'A glass box,',
+    titleB: 'not a black box.',
+    lead: 'See what the app does before it runs.',
+    black: {
+      status: 'Running…',
+      title: 'Black box',
+      line: 'Other platforms: you have to trust the AI.',
     },
+    glass: {
+      status: 'Running · Restock approval',
+      title: 'Glass box',
+      line: 'RotexAI: you check the business logic yourself.',
+    },
+    steps: [
+      {
+        who: 'Mai',
+        what: 'Requests restock',
+      },
+      {
+        who: 'Anna',
+        what: 'Approves',
+      },
+      {
+        who: 'The app',
+        what: 'Sends to supplier',
+      },
+    ],
+    logLabel: 'Run log',
+    log: [
+      {
+        at: '18:02',
+        text: 'Mai requested 20 bags of flour',
+      },
+      {
+        at: '18:05',
+        text: 'Anna approved',
+      },
+      {
+        at: '18:05',
+        text: 'Order sent to the supplier',
+      },
+    ],
     points: [
-      { title: 'Read it before it is built', line: 'The plan lists every workflow and table.' },
-      { title: 'Every change is on record', line: 'Data moves only through workflows: who, what, when.' },
-      { title: 'Updates arrive as a diff', line: 'Version 1 to 2, applied after a yes.' },
+      'Read it before it is built',
+      'Every change on record',
+      'Compare versions',
     ],
   },
   team: {
