@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0E1A24" />
+    <title>RotexAI for investors</title>
+    <meta name="description" content="RotexAI turns how a small business already works, told in plain words, into the software that runs it. Request the deck, try the product or book a call." />
+    <meta name="robots" content="noindex" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="RotexAI for investors" />
+    <meta property="og:description" content="Describe a business in plain words. RotexAI builds and runs the software for it." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script>
+      // Set the page language before first paint (same rule as src/i18n/index.js initialLang).
+      try {
+        var saved = localStorage.getItem('rx-lang')
+        var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]
+        document.documentElement.lang = saved === 'en' || saved === 'vi' ? saved
+          : prefs.some(function (l) { return l && l.toLowerCase().indexOf('vi') === 0 }) ? 'vi' : 'en'
+      } catch { /* keep lang="en" */ }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
