@@ -7,6 +7,7 @@ export default {
   },
   nav: {
     how: 'How it works',
+    why: 'Why RotexAI',
     market: 'Market',
     team: 'Team',
     sections: 'Sections',
@@ -19,7 +20,7 @@ export default {
   hero: {
     kicker: 'RotexAI · Investor brief · Pre-seed',
     lineB: 'Every business, its own app.',
-    lead: 'Owners describe how they work. AI agents build, run and change the app.',
+    lead: 'Owners describe how they work. AI agents build, run and change the app, and the owner can read every rule it follows.',
   },
   showcase: {
     clipLabel: "Corner Bakery's restock app: a manager approves a flour request",
@@ -66,6 +67,28 @@ export default {
         alt: 'A change request adds a supplier column; the update from version 1 to 2 waits for review',
       },
     ],
+  },
+  glassBox: {
+    label: 'Why RotexAI',
+    title: 'A glass box, not a black box',
+    lead: 'Other AI app builders hand the owner generated code and ask them to trust it.',
+    leadStrong: 'RotexAI shows the rules the app runs in plain words, so the owner can check them instead of assuming they work.',
+    them: 'Typical AI app builder',
+    us: 'RotexAI',
+    rows: [
+      { topic: 'What the owner gets', them: 'Code only an engineer can read', us: 'A plan and workflows in plain words' },
+      { topic: 'How they know it works', them: 'Click around and hope', us: 'Read each rule step by step. The app runs exactly that workflow.' },
+      { topic: 'When data changes', them: 'Somewhere in the code', us: 'Only through a workflow, with who and when on record' },
+      { topic: 'When the business changes', them: 'New code, and no clear view of what moved', us: 'A version-to-version diff, applied after a yes' },
+    ],
+    flowLabel: 'The workflow the app runs',
+    flowTitle: 'Restock approval',
+    flow: [
+      { who: 'Mai · staff', what: 'Requests 20 bags of flour' },
+      { who: 'Anna · owner', what: 'Approves the request' },
+      { who: 'The app', what: 'Sends the order to the supplier' },
+    ],
+    flowNote: 'From the Corner Bakery example. The owner reads this, and the app runs this.',
   },
   team: {
     label: 'Built for the whole team',

@@ -346,6 +346,51 @@ function Route({ route, i }) {
   )
 }
 
+// Why RotexAI: the app is a glass box. A comparison with typical AI app builders, then the bakery's
+// restock workflow written out the way the owner reads it (an illustration of the walkthrough's example).
+function GlassBox() {
+  const { t } = useLang()
+  const g = t.glassBox
+  return (
+    <div className="glassbox">
+      <table className="compare reveal">
+        <thead>
+          <tr>
+            <td />
+            <th scope="col">{g.them}</th>
+            <th scope="col" className="compare-us">{g.us}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {g.rows.map((r, i) => (
+            <tr key={i}>
+              <th scope="row">{r.topic}</th>
+              <td data-label={g.them}>{r.them}</td>
+              <td data-label={g.us} className="compare-us">{r.us}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <figure className="flow glass reveal" style={{ '--d': '0.12s' }}>
+        <span className="label">{g.flowLabel}</span>
+        <h3 className="title">{g.flowTitle}</h3>
+        <ol className="flow-steps">
+          {g.flow.map((f, i) => (
+            <li key={i}>
+              <span className="flow-dot" aria-hidden="true">{i + 1}</span>
+              <div>
+                <span className="flow-who">{f.who}</span>
+                <span className="flow-what">{f.what}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <figcaption className="small">{g.flowNote}</figcaption>
+      </figure>
+    </div>
+  )
+}
+
 function Heading({ label, text }) {
   return (
     <header className="section-head reveal">
@@ -386,6 +431,7 @@ function Page() {
           <a href="#top" className="brand"><Lockup /></a>
           <nav className="nav" aria-label={t.nav.sections}>
             <a href="#how">{t.nav.how}</a>
+            <a href="#why">{t.nav.why}</a>
             <a href="#market">{t.nav.market}</a>
             <a href="#team">{t.nav.team}</a>
           </nav>
@@ -446,6 +492,17 @@ function Page() {
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
+
+        <section id="why" className="section section-tight">
+          <div className="wrap">
+            <header className="section-head reveal">
+              <span className="label">{t.glassBox.label}</span>
+              <h2 className="h2"><Words text={t.glassBox.title} /></h2>
+              <p className="lead">{t.glassBox.lead} <strong>{t.glassBox.leadStrong}</strong></p>
+            </header>
+            <GlassBox />
           </div>
         </section>
 

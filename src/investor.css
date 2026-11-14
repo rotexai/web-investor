@@ -380,6 +380,55 @@ p { text-wrap: pretty; }
 .tile figcaption { display: flex; flex-direction: column; gap: 8px; padding: 20px 18px 16px; }
 @media (max-width: 860px) { .bento { grid-template-columns: 1fr; } }
 
+/* Why RotexAI: comparison table beside the restock workflow card */
+.section-head .lead strong { color: var(--fg); font-weight: 600; }
+.glassbox { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 40px; align-items: start; }
+.compare { width: 100%; border-collapse: collapse; min-width: 0; }
+.compare th, .compare td { text-align: left; vertical-align: top; padding: 16px 14px; border-bottom: 1px solid var(--line); }
+.compare thead th {
+  font-family: var(--font-mono); font-size: var(--fs-label); font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-top: 0;
+}
+.compare thead th.compare-us { color: var(--lavender); }
+.compare tbody th { font-family: var(--font-display); font-size: var(--fs-small); font-weight: 700; color: var(--fg); width: 24%; }
+.compare tbody td { color: var(--muted); font-size: var(--fs-small); }
+.compare tbody td.compare-us {
+  color: var(--fg);
+  background: linear-gradient(90deg, rgba(91, 67, 232, 0.14), rgba(91, 67, 232, 0.04));
+  border-left: 1px solid rgba(163, 144, 255, 0.35);
+}
+.flow { margin: 0; padding: 24px; border-radius: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.flow-steps { display: flex; flex-direction: column; margin-top: 6px; }
+.flow-steps li { position: relative; display: flex; gap: 14px; padding-bottom: 20px; }
+.flow-steps li:last-child { padding-bottom: 4px; }
+.flow-steps li:not(:last-child)::before {
+  content: ""; position: absolute; left: 13px; top: 30px; bottom: 2px; width: 1px;
+  background: linear-gradient(var(--lavender), rgba(163, 144, 255, 0.15));
+}
+.flow-dot {
+  flex: none; width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: var(--fs-label); color: var(--fg);
+  background: rgba(91, 67, 232, 0.35); border: 1px solid rgba(163, 144, 255, 0.55);
+}
+.flow-steps div { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 2px; }
+.flow-who { font-family: var(--font-mono); font-size: var(--fs-label); color: var(--lavender); letter-spacing: 0.04em; }
+.flow-what { font-size: var(--fs-small); color: var(--fg); }
+@media (max-width: 960px) { .glassbox { grid-template-columns: 1fr; } }
+@media (max-width: 760px) {
+  .compare thead { display: none; }
+  .compare, .compare tbody, .compare tr, .compare th, .compare td { display: block; width: auto; }
+  .compare tr { padding-block: 14px; border-bottom: 1px solid var(--line); }
+  .compare tbody th, .compare tbody td { border: 0; padding: 4px 0; }
+  .compare tbody th { width: auto; font-size: var(--fs-body); }
+  .compare tbody td { padding: 8px 12px; margin-top: 6px; border-radius: 10px; }
+  .compare tbody td::before {
+    content: attr(data-label); display: block; margin-bottom: 2px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+  .compare tbody td.compare-us { border-left: 0; border: 1px solid rgba(163, 144, 255, 0.35); }
+  .compare tbody td.compare-us::before { color: var(--lavender); }
+}
+
 .film { display: grid; grid-template-columns: 1fr 260px; gap: 16px; align-items: start; }
 .film-frame { padding: 8px; border-radius: 20px; min-width: 0; }
 .film-frame video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 12px; background: #0c1420; }

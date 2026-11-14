@@ -7,6 +7,7 @@ export default {
   },
   nav: {
     how: 'Cách hoạt động',
+    why: 'Vì sao RotexAI',
     market: 'Thị trường',
     team: 'Đội ngũ',
     sections: 'Các mục',
@@ -19,7 +20,7 @@ export default {
   hero: {
     kicker: 'RotexAI · Tóm tắt cho nhà đầu tư · Pre-seed',
     lineB: 'Mỗi doanh nghiệp một ứng dụng.',
-    lead: 'Chủ doanh nghiệp mô tả cách họ làm việc. AI agent xây dựng, vận hành và thay đổi ứng dụng.',
+    lead: 'Chủ doanh nghiệp mô tả cách họ làm việc. AI agent xây dựng, vận hành và thay đổi ứng dụng, còn chủ doanh nghiệp đọc được mọi quy tắc mà ứng dụng tuân theo.',
   },
   showcase: {
     clipLabel: 'Ứng dụng nhập hàng của Corner Bakery: quản lý duyệt yêu cầu nhập bột mì',
@@ -66,6 +67,28 @@ export default {
         alt: 'Yêu cầu thay đổi thêm cột nhà cung cấp; bản cập nhật từ phiên bản 1 lên 2 đang chờ duyệt',
       },
     ],
+  },
+  glassBox: {
+    label: 'Vì sao RotexAI',
+    title: 'Hộp kính, không phải hộp đen',
+    lead: 'Các nền tảng tạo ứng dụng bằng AI khác trao cho chủ doanh nghiệp đoạn mã được tạo ra và yêu cầu họ tin vào nó.',
+    leadStrong: 'RotexAI trình bày các quy tắc ứng dụng chạy theo bằng ngôn ngữ dễ hiểu, để chủ doanh nghiệp tự kiểm tra thay vì chỉ giả định là chúng đúng.',
+    them: 'Nền tảng tạo ứng dụng bằng AI thông thường',
+    us: 'RotexAI',
+    rows: [
+      { topic: 'Chủ doanh nghiệp nhận được', them: 'Mã chỉ kỹ sư mới đọc được', us: 'Kế hoạch và quy trình bằng ngôn ngữ dễ hiểu' },
+      { topic: 'Làm sao biết nó chạy đúng', them: 'Bấm thử và hy vọng', us: 'Đọc từng quy tắc theo từng bước. Ứng dụng chạy đúng quy trình đó.' },
+      { topic: 'Khi dữ liệu thay đổi', them: 'Ở đâu đó trong mã', us: 'Chỉ qua quy trình, có ghi lại ai và khi nào' },
+      { topic: 'Khi doanh nghiệp thay đổi', them: 'Mã mới, và không rõ điều gì đã thay đổi', us: 'So sánh từng phiên bản, áp dụng sau khi được đồng ý' },
+    ],
+    flowLabel: 'Quy trình ứng dụng đang chạy',
+    flowTitle: 'Duyệt nhập hàng',
+    flow: [
+      { who: 'Mai · nhân viên', what: 'Yêu cầu 20 bao bột mì' },
+      { who: 'Anna · chủ sở hữu', what: 'Phê duyệt yêu cầu' },
+      { who: 'Ứng dụng', what: 'Gửi đơn hàng đến nhà cung cấp' },
+    ],
+    flowNote: 'Từ ví dụ Corner Bakery. Chủ doanh nghiệp đọc quy trình này, và ứng dụng chạy quy trình này.',
   },
   team: {
     label: 'Được xây dựng cho cả đội nhóm',
