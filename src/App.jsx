@@ -346,48 +346,136 @@ function Route({ route, i }) {
   )
 }
 
-// Why RotexAI: the app is a glass box. A comparison with typical AI app builders, then the bakery's
-// restock workflow written out the way the owner reads it (an illustration of the walkthrough's example).
+// Why RotexAI: the app is a glass box. Left, what other AI app builders hand over (code the owner cannot
+// read). Right, the bakery's restock workflow drawn as the app runs it: a pulse walks the steps and the run
+// log fills in who did what, when. Static and complete under reduced motion.
+const BLACK_BOX_CODE = [
+  'const r = await db.q(`UPDATE stk SET q=q-$1`, [n])',
+  'if (u?.r === 2 && !f.ok) return h(409)',
+  'export const apv = (x) => x.s > 3 ? ok(x) : rj(x)',
+  'await fetch(SUP_URL, { method: "POST", body: enc(o) })',
+  '// TODO: handle partial approvals',
+  'try { sync(o, { force: true }) } catch {}',
+  'const q = rows.filter((z) => z.t && !z.d).map(mk)',
+  'if (!cache[k]) cache[k] = await load(k, opts)',
+]
+
+function Icon({ name }) {
+  const paths = {
+    eye: <><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></>,
+    log: <><path d="M4 6h16M4 12h16M4 18h10" /><circle cx="19" cy="18" r="2" /></>,
+    diff: <><path d="M7 4v10a4 4 0 0 0 4 4h6" /><path d="m14 15 3 3-3 3" /><circle cx="7" cy="4" r="0.5" /></>,
+    table: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M9 10v10" /></>,
+  }
+  return (
+    <svg className="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      {paths[name]}
+    </svg>
+  )
+}
+
+// Walks the workflow one step per tick while it is on screen: -1 (idle), 0..4 (node, link, node, link, node),
+// then holds the finished state. Starts finished, so reduced motion and no JS show the whole run.
+const WF_LAST = 4
+function useWorkflowRun(ref) {
+  const [step, setStep] = useState(WF_LAST + 3)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return
+    let timer = null
+    const io = new IntersectionObserver(
+      ([e]) => {
+        clearInterval(timer)
+        if (!e.isIntersecting) return
+        setStep(-1)
+        timer = setInterval(() => setStep((s) => (s >= WF_LAST + 3 ? -1 : s + 1)), 850)
+      },
+      { threshold: 0.35 },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      clearInterval(timer)
+    }
+  }, [ref])
+  return step
+}
+
 function GlassBox() {
   const { t } = useLang()
   const g = t.glassBox
+  const w = g.wf
+  const [ask, approve, send] = w.steps
+  const ref = useRef(null)
+  const step = useWorkflowRun(ref)
+  const at = (i) => (i === step ? ' now' : i <= step ? ' done' : '')
   return (
-    <div className="glassbox">
-      <table className="compare reveal">
-        <thead>
-          <tr>
-            <td />
-            <th scope="col">{g.them}</th>
-            <th scope="col" className="compare-us">{g.us}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {g.rows.map((r, i) => (
-            <tr key={i}>
-              <th scope="row">{r.topic}</th>
-              <td data-label={g.them}>{r.them}</td>
-              <td data-label={g.us} className="compare-us">{r.us}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <figure className="flow glass reveal" style={{ '--d': '0.12s' }}>
-        <span className="label">{g.flowLabel}</span>
-        <h3 className="title">{g.flowTitle}</h3>
-        <ol className="flow-steps">
-          {g.flow.map((f, i) => (
-            <li key={i}>
-              <span className="flow-dot" aria-hidden="true">{i + 1}</span>
-              <div>
-                <span className="flow-who">{f.who}</span>
-                <span className="flow-what">{f.what}</span>
-              </div>
+    <>
+      <div className="gb">
+        <figure className="gb-panel bb reveal">
+          <span className="label label-quiet">{g.them}</span>
+          <div className="bb-box" aria-hidden="true">
+            <pre>{BLACK_BOX_CODE.join('\n')}</pre>
+            <span className="bb-q">?</span>
+          </div>
+          <figcaption className="small">{g.themCaption}</figcaption>
+        </figure>
+
+        <figure ref={ref} className="gb-panel wf glass reveal" style={{ '--d': '0.12s' }}>
+          <div className="wf-head">
+            <span className="label">{g.us}</span>
+            <span className="wf-name">{w.name} <span className="wf-ver">{w.version}</span></span>
+            <span className="wf-live"><span className="wf-live-dot" aria-hidden="true" />{w.live}</span>
+          </div>
+          <ol className="wf-track">
+            <li className={`wf-node${at(0)}`}>
+              <span className="wf-who">{ask.who}</span>
+              <span className="wf-what">{ask.what}</span>
+              <span className="wf-data"><Icon name="table" />{ask.data}</span>
             </li>
-          ))}
-        </ol>
-        <figcaption className="small">{g.flowNote}</figcaption>
-      </figure>
-    </div>
+            <li className={`wf-link${at(1)}`} aria-hidden="true" />
+            <li className={`wf-node wf-decision${at(2)}`}>
+              <span className="wf-who">{approve.who}</span>
+              <span className="wf-what"><span className="wf-diamond" aria-hidden="true" />{approve.what}</span>
+              <span className="wf-no">{approve.no}</span>
+            </li>
+            <li className={`wf-link wf-link-yes${at(3)}`} data-label={w.yes}>
+              <span className="sr-only">{w.yes}</span>
+            </li>
+            <li className={`wf-node${at(4)}`}>
+              <span className="wf-who">{send.who}</span>
+              <span className="wf-what">{send.what}</span>
+              <span className="wf-data"><Icon name="table" />{send.data}</span>
+            </li>
+          </ol>
+          <div className="wf-log">
+            <span className="label label-quiet">{w.logLabel}</span>
+            <ul>
+              {w.log.map((l, i) => (
+                <li key={i} className={i * 2 <= step ? 'shown' : ''}>
+                  <span className="wf-check" aria-hidden="true">✓</span>
+                  <time>{l.at}</time>
+                  <span>{l.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <figcaption className="small">{g.usCaption}</figcaption>
+        </figure>
+      </div>
+
+      <ul className="gb-points">
+        {g.points.map((pt, i) => (
+          <li key={i} className="reveal" style={{ '--d': `${0.08 * i}s` }}>
+            <Icon name={['eye', 'log', 'diff'][i]} />
+            <div>
+              <h3 className="title">{pt.title}</h3>
+              <p className="small">{pt.line}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </>
   )
 }
 

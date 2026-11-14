@@ -71,24 +71,64 @@ export default {
   glassBox: {
     label: 'Vì sao RotexAI',
     title: 'Hộp kính, không phải hộp đen',
-    lead: 'Các nền tảng tạo ứng dụng bằng AI khác trao cho chủ doanh nghiệp đoạn mã được tạo ra và yêu cầu họ tin vào nó.',
-    leadStrong: 'RotexAI trình bày các quy tắc ứng dụng chạy theo bằng ngôn ngữ dễ hiểu, để chủ doanh nghiệp tự kiểm tra thay vì chỉ giả định là chúng đúng.',
+    lead: 'Các nền tảng tạo ứng dụng AI khác giao mã nguồn rồi yêu cầu chủ doanh nghiệp tin tưởng.',
+    leadStrong: 'RotexAI hiển thị các quy trình ứng dụng đang chạy, để chủ doanh nghiệp tự kiểm tra.',
     them: 'Nền tảng tạo ứng dụng bằng AI thông thường',
+    themCaption: 'Mã sinh tự động. Chủ doanh nghiệp không đọc được, nên chỉ bấm thử và hy vọng nó chạy.',
     us: 'RotexAI',
-    rows: [
-      { topic: 'Chủ doanh nghiệp nhận được', them: 'Mã chỉ kỹ sư mới đọc được', us: 'Kế hoạch và quy trình bằng ngôn ngữ dễ hiểu' },
-      { topic: 'Làm sao biết nó chạy đúng', them: 'Bấm thử và hy vọng', us: 'Đọc từng quy tắc theo từng bước. Ứng dụng chạy đúng quy trình đó.' },
-      { topic: 'Khi dữ liệu thay đổi', them: 'Ở đâu đó trong mã', us: 'Chỉ qua quy trình, có ghi lại ai và khi nào' },
-      { topic: 'Khi doanh nghiệp thay đổi', them: 'Mã mới, và không rõ điều gì đã thay đổi', us: 'So sánh từng phiên bản, áp dụng sau khi được đồng ý' },
+    usCaption: 'Quy trình mà ứng dụng thực sự chạy, bằng ngôn ngữ chủ doanh nghiệp kiểm tra được.',
+    wf: {
+      name: 'Duyệt nhập hàng',
+      version: 'v2',
+      live: 'Đang chạy',
+      steps: [
+        {
+          who: 'Mai · nhân viên',
+          what: 'Yêu cầu bột mì',
+          data: 'Yêu cầu nhập hàng',
+        },
+        {
+          who: 'Anna · chủ sở hữu',
+          what: 'Duyệt?',
+          no: 'Không: báo Mai lý do',
+        },
+        {
+          who: 'Ứng dụng',
+          what: 'Gửi đơn hàng',
+          data: 'Nhà cung cấp',
+        },
+      ],
+      yes: 'Có',
+      logLabel: 'Nhật ký chạy',
+      log: [
+        {
+          at: '18:02',
+          text: 'Mai yêu cầu 20 bao bột mì',
+        },
+        {
+          at: '18:05',
+          text: 'Anna đã duyệt',
+        },
+        {
+          at: '18:05',
+          text: 'Đã gửi đơn cho nhà cung cấp',
+        },
+      ],
+    },
+    points: [
+      {
+        title: 'Đọc trước khi xây dựng',
+        line: 'Kế hoạch liệt kê mọi quy trình và bảng.',
+      },
+      {
+        title: 'Mọi thay đổi đều được ghi lại',
+        line: 'Dữ liệu chỉ di chuyển qua quy trình: ai, cái gì, khi nào.',
+      },
+      {
+        title: 'Cập nhật kèm so sánh phiên bản',
+        line: 'Từ phiên bản 1 lên 2, áp dụng sau khi được đồng ý.',
+      },
     ],
-    flowLabel: 'Quy trình ứng dụng đang chạy',
-    flowTitle: 'Duyệt nhập hàng',
-    flow: [
-      { who: 'Mai · nhân viên', what: 'Yêu cầu 20 bao bột mì' },
-      { who: 'Anna · chủ sở hữu', what: 'Phê duyệt yêu cầu' },
-      { who: 'Ứng dụng', what: 'Gửi đơn hàng đến nhà cung cấp' },
-    ],
-    flowNote: 'Từ ví dụ Corner Bakery. Chủ doanh nghiệp đọc quy trình này, và ứng dụng chạy quy trình này.',
   },
   team: {
     label: 'Được xây dựng cho cả đội nhóm',
