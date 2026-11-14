@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { CONTACT_EMAIL, DECK_REQUEST_URL, PORTAL_URL, ROUTES } from './config.js'
+import { CONTACT_EMAIL, DECK_REQUEST_URL, FOUNDER_URL, PORTAL_URL, ROUTES } from './config.js'
 import { COPY, LangContext, initialLang, saveLang, useLang } from './i18n/index.js'
 import './investor.css'
 
@@ -95,7 +95,12 @@ function useReveal() {
 
 // Product scenes are cut from the RotexAI walkthrough video (aos video/videos/piece-4-how-to): the portal rebuilt
 // from its source, labelled as a simulation. Clips play only while on screen; reduced motion shows the poster.
+// Each language has its own render (English files have no suffix, Vietnamese ones end in .vi).
+const mediaPath = (name, lang) => `/media/${name}${lang === 'en' ? '' : `.${lang}`}`
+
 function Clip({ name, label }) {
+  const { lang } = useLang()
+  const src = mediaPath(name, lang)
   const ref = useRef(null)
   useEffect(() => {
     const v = ref.current
@@ -109,11 +114,12 @@ function Clip({ name, label }) {
     )
     io.observe(v)
     return () => io.disconnect()
-  }, [])
+  }, [src])
+  // key={src}: a new language mounts a fresh element, since changing <source> alone does not reload a video.
   return (
     <div className="clip">
-      <video ref={ref} muted loop playsInline preload="none" width="1280" height="720" poster={`/media/${name}.jpg`} aria-label={label}>
-        <source src={`/media/${name}.mp4`} type="video/mp4" />
+      <video key={src} ref={ref} muted loop playsInline preload="none" width="1280" height="720" poster={`${src}.jpg`} aria-label={label}>
+        <source src={`${src}.mp4`} type="video/mp4" />
       </video>
     </div>
   )
@@ -227,8 +233,8 @@ function Film() {
   return (
     <div className="film">
       <div className="film-frame glass">
-        <video ref={ref} controls preload="none" playsInline width="1280" height="720" poster="/media/walkthrough.jpg">
-          <source src="/media/walkthrough.mp4" type="video/mp4" />
+        <video key={lang} ref={ref} controls preload="none" playsInline width="1280" height="720" poster={`${mediaPath('walkthrough', lang)}.jpg`}>
+          <source src={`${mediaPath('walkthrough', lang)}.mp4`} type="video/mp4" />
           <track kind="captions" src="/media/walkthrough.en.vtt" srcLang="en" label="English" default={lang === 'en'} />
           <track kind="captions" src="/media/walkthrough.vi.vtt" srcLang="vi" label="Tiếng Việt" default={lang === 'vi'} />
         </video>
@@ -495,11 +501,14 @@ function Page() {
             <div className="split-col">
               <Heading label={t.people.label} text={t.people.title} />
               <div className="person reveal">
-                <span className="avatar" aria-hidden="true" />
+                <img className="avatar" src="/media/founder.jpg" alt="" width="64" height="64" loading="lazy" />
                 <div>
-                  <p className="title"><Slot>{t.people.name}</Slot></p>
-                  <p className="small"><Slot>{t.people.role}</Slot></p>
-                  <p className="body"><Slot>{t.people.background}</Slot></p>
+                  <p className="title">{t.people.name}</p>
+                  <p className="small">{t.people.role}</p>
+                  <p className="body">{t.people.background}</p>
+                  <a className="person-link" href={FOUNDER_URL} target="_blank" rel="noopener">
+                    {t.people.site} · qvanle.rotexai.com <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
               </div>
             </div>

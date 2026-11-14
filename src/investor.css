@@ -415,10 +415,14 @@ p { text-wrap: pretty; }
 .person { display: flex; gap: 18px; align-items: flex-start; }
 .person > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .avatar {
-  flex: none; width: 64px; height: 64px; border-radius: 50%;
-  border: 1px dashed rgba(76, 201, 240, 0.5);
-  background: radial-gradient(circle at 30% 30%, rgba(163, 144, 255, 0.25), rgba(91, 67, 232, 0.05));
+  flex: none; width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
+  border: 1px solid rgba(163, 144, 255, 0.45);
 }
+.person-link {
+  margin-top: 4px; font-family: var(--font-mono); font-size: var(--fs-label);
+  color: var(--lavender); text-decoration: none; overflow-wrap: anywhere;
+}
+.person-link:hover, .person-link:focus-visible { text-decoration: underline; }
 .terms { display: flex; flex-direction: column; }
 .terms > div {
   display: grid; grid-template-columns: 9em 1fr; gap: 16px;

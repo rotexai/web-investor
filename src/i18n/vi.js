@@ -109,9 +109,10 @@ export default {
   people: {
     label: 'Đội ngũ',
     title: 'Ai đang xây dựng RotexAI',
-    name: '[Tên nhà sáng lập]',
-    role: '[Chức vụ]',
-    background: '[Lý lịch một dòng]',
+    name: 'qvanle',
+    role: 'Nhà sáng lập',
+    background: 'Kỹ sư. Xây dựng RotexAI từ đầu đến cuối, và mọi công cụ đều được thử trong công việc thực tế trước khi khách hàng dùng đến.',
+    site: 'Trang cá nhân và bài viết',
   },
   round: {
     label: 'Vòng gọi vốn',

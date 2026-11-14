@@ -22,7 +22,8 @@ npm run build    # dist/
   card.
 - Deck requests POST JSON `{ name, firm, email, note, lang }` to `VITE_DECK_REQUEST_URL` (build-time env). Unset,
   the form tells the visitor to email instead.
-- Product clips in `public/media/` are cut from the RotexAI walkthrough video, which shows the portal rebuilt from
+- Product clips in `public/media/` are cut from the RotexAI walkthrough video (`<name>.mp4` from the English render,
+  `<name>.vi.mp4` from the Vietnamese one, same cut points), which shows the portal rebuilt from
   its source code. The page labels them as a simulated interface; keep that label.
 
 ## Deploy

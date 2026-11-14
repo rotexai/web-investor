@@ -109,9 +109,10 @@ export default {
   people: {
     label: 'Team',
     title: 'Who is building it',
-    name: '[Founder name]',
-    role: '[Role]',
-    background: '[One-line background]',
+    name: 'qvanle',
+    role: 'Founder',
+    background: 'Engineer. Builds RotexAI end to end and uses every tool on real work before any customer does.',
+    site: 'Personal site and writing',
   },
   round: {
     label: 'The round',
