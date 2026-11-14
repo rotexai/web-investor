@@ -69,52 +69,109 @@ export default {
     ],
   },
   glassBox: {
+    label: 'Vì sao RotexAI',
     titleA: 'Hộp kính,',
     titleB: 'không phải hộp đen.',
     lead: 'Thấy rõ ứng dụng làm gì, trước khi nó chạy.',
     black: {
-      status: 'Đang chạy…',
+      url: 'Ứng dụng đã tạo · xem trước',
+      file: 'app.generated.js',
+      lines: '2.418 dòng',
+      question: 'Quản lý có duyệt nhập hàng không?',
+      answer: 'Chỉ có mã nguồn biết.',
       title: 'Hộp đen',
-      line: 'Nền tảng khác: bạn phải tin AI.',
+      line: 'Nền tảng khác chỉ giao mã đã tạo. Bạn phải tin vào AI.',
     },
     glass: {
-      status: 'Đang chạy · Duyệt nhập hàng',
+      sim: 'Mô phỏng giao diện',
+      crumb: 'Quy trình',
+      wfName: 'Duyệt nhập hàng',
+      run: 'Lượt chạy #128',
+      nodes: [
+        {
+          name: 'Yêu cầu nhập hàng',
+          summary: 'Mai xin nhập 20 bao bột mì',
+        },
+        {
+          name: 'Trên 2.000.000₫?',
+          summary: 'Đơn lớn cần quản lý duyệt',
+        },
+        {
+          name: 'Quản lý duyệt',
+          summary: 'Anna kiểm tra đơn hàng',
+        },
+        {
+          name: 'Gửi nhà cung cấp',
+          summary: 'Đơn được gửi tới xưởng bột mì',
+        },
+        {
+          name: 'Tự động duyệt',
+          summary: 'Đơn nhỏ không cần quản lý',
+        },
+      ],
+      who: [
+        'Mai',
+        '',
+        'Anna',
+        '',
+        '',
+      ],
+      yes: 'Có',
+      no: 'Không',
+      states: {
+        done: 'Đã xong',
+        running: 'Đang chạy',
+        waiting: 'Đang chờ',
+        notReached: 'Chưa tới',
+        skipped: 'Bỏ qua',
+      },
       title: 'Hộp kính',
-      line: 'RotexAI: bạn tự kiểm tra nghiệp vụ.',
+      line: 'RotexAI hiển thị quy trình ứng dụng chạy. Bạn tự kiểm tra nghiệp vụ.',
+      log: {
+        title: 'Nhật ký chạy',
+        hint: 'Rê chuột hoặc chạm vào một dòng để xem bước đó trên sơ đồ.',
+        replay: 'Chạy lại',
+      },
+      steps: [
+        {
+          msg: 'Mai xin nhập 20 bao bột mì',
+          log: 'Mai gửi yêu cầu nhập hàng: 20 bao bột mì, 2.400.000₫.',
+        },
+        {
+          msg: '2.400.000₫ vượt mức: Có',
+          log: 'Đơn trên 2.000.000₫ nên cần quản lý duyệt. Bước Tự động duyệt được bỏ qua.',
+        },
+        {
+          msg: 'Đang chờ Anna',
+          log: 'Đang chờ Anna duyệt.',
+        },
+        {
+          msg: 'Anna đã duyệt',
+          log: 'Anna đã duyệt đơn hàng.',
+        },
+        {
+          msg: 'Đang gửi đơn',
+          log: 'Đang gửi đơn tới xưởng bột mì.',
+        },
+        {
+          msg: 'Đã gửi đơn',
+          log: 'Xưởng bột mì đã nhận đơn. Lượt chạy đã xong.',
+        },
+      ],
     },
-    steps: [
-      {
-        who: 'Mai',
-        what: 'Yêu cầu nhập hàng',
-      },
-      {
-        who: 'Anna',
-        what: 'Duyệt',
-      },
-      {
-        who: 'Ứng dụng',
-        what: 'Gửi nhà cung cấp',
-      },
-    ],
-    logLabel: 'Nhật ký chạy',
-    log: [
-      {
-        at: '18:02',
-        text: 'Mai yêu cầu 20 bao bột mì',
-      },
-      {
-        at: '18:05',
-        text: 'Anna đã duyệt',
-      },
-      {
-        at: '18:05',
-        text: 'Đã gửi đơn cho nhà cung cấp',
-      },
-    ],
     points: [
-      'Đọc trước khi xây',
-      'Ghi lại mọi thay đổi',
-      'So sánh phiên bản',
+      {
+        title: 'Đọc trước khi xây',
+        line: 'Kế hoạch liệt kê mọi quy trình và bảng.',
+      },
+      {
+        title: 'Ghi lại mọi thay đổi',
+        line: 'Ai làm gì, và lúc nào.',
+      },
+      {
+        title: 'So sánh phiên bản',
+        line: 'Xem những gì đã thay đổi trước khi bạn đồng ý.',
+      },
     ],
   },
   team: {

@@ -69,52 +69,109 @@ export default {
     ],
   },
   glassBox: {
+    label: 'Why RotexAI',
     titleA: 'A glass box,',
     titleB: 'not a black box.',
     lead: 'See what the app does before it runs.',
     black: {
-      status: 'Running…',
+      url: 'Generated app · preview',
+      file: 'app.generated.js',
+      lines: '2,418 lines',
+      question: 'Does a manager approve restocks?',
+      answer: 'Only the code knows.',
       title: 'Black box',
-      line: 'Other platforms: you have to trust the AI.',
+      line: 'Other platforms hand over generated code. You have to trust the AI.',
     },
     glass: {
-      status: 'Running · Restock approval',
+      sim: 'Simulated interface',
+      crumb: 'Workflows',
+      wfName: 'Restock approval',
+      run: 'Run #128',
+      nodes: [
+        {
+          name: 'Restock request',
+          summary: 'Mai asks for 20 bags of flour',
+        },
+        {
+          name: 'Over 2,000,000₫?',
+          summary: 'Bigger orders need a manager',
+        },
+        {
+          name: 'Manager approves',
+          summary: 'Anna checks the order',
+        },
+        {
+          name: 'Send to supplier',
+          summary: 'The order goes to the flour mill',
+        },
+        {
+          name: 'Auto-approve',
+          summary: 'Small orders skip the manager',
+        },
+      ],
+      who: [
+        'Mai',
+        '',
+        'Anna',
+        '',
+        '',
+      ],
+      yes: 'Yes',
+      no: 'No',
+      states: {
+        done: 'Done',
+        running: 'Running',
+        waiting: 'Waiting',
+        notReached: 'Not reached',
+        skipped: 'Skipped',
+      },
       title: 'Glass box',
-      line: 'RotexAI: you check the business logic yourself.',
+      line: 'RotexAI shows the workflow the app runs. You check the business logic yourself.',
+      log: {
+        title: 'Run log',
+        hint: 'Point at a line to see that step.',
+        replay: 'Replay',
+      },
+      steps: [
+        {
+          msg: 'Mai asks for 20 bags of flour',
+          log: 'Mai sent a restock request: 20 bags of flour, 2,400,000₫.',
+        },
+        {
+          msg: '2,400,000₫ is over the limit: Yes',
+          log: 'The order is over 2,000,000₫, so it needs a manager. Auto-approve is skipped.',
+        },
+        {
+          msg: 'Waiting for Anna',
+          log: 'Waiting for Anna to approve.',
+        },
+        {
+          msg: 'Anna approved',
+          log: 'Anna approved the order.',
+        },
+        {
+          msg: 'Sending the order',
+          log: 'Sending the order to the flour mill.',
+        },
+        {
+          msg: 'Order sent',
+          log: 'The flour mill got the order. The run is finished.',
+        },
+      ],
     },
-    steps: [
-      {
-        who: 'Mai',
-        what: 'Requests restock',
-      },
-      {
-        who: 'Anna',
-        what: 'Approves',
-      },
-      {
-        who: 'The app',
-        what: 'Sends to supplier',
-      },
-    ],
-    logLabel: 'Run log',
-    log: [
-      {
-        at: '18:02',
-        text: 'Mai requested 20 bags of flour',
-      },
-      {
-        at: '18:05',
-        text: 'Anna approved',
-      },
-      {
-        at: '18:05',
-        text: 'Order sent to the supplier',
-      },
-    ],
     points: [
-      'Read it before it is built',
-      'Every change on record',
-      'Compare versions',
+      {
+        title: 'Read it before it is built',
+        line: 'The plan lists every workflow and table.',
+      },
+      {
+        title: 'Every change on record',
+        line: 'Who did what, and when.',
+      },
+      {
+        title: 'Compare versions',
+        line: 'See what changed before you say yes.',
+      },
     ],
   },
   team: {

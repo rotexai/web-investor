@@ -346,130 +346,303 @@ function Route({ route, i }) {
   )
 }
 
-// Why RotexAI (design: "Hộp kính, không phải hộp đen"). Left, the black box: code you cannot read behind a
-// pulsing "?". Right, the glass box: the bakery's restock workflow running step by step, with a run log.
-// Timeline, one tick per 1.2 s while on screen: 0 idle, 1 Mai, 2 first link, 3 Anna, 4 second link, 5 the app,
-// 6-8 hold finished. Starts finished, so reduced motion and no JS show the whole run.
-const GB_TICKS = 9
-const GB_DONE = 6
-function useGlassRun(ref) {
-  const [tick, setTick] = useState(GB_DONE)
-  useEffect(() => {
-    const el = ref.current
-    if (!el || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return
-    let timer = null
-    const io = new IntersectionObserver(
-      ([e]) => {
-        clearInterval(timer)
-        if (!e.isIntersecting) return
-        setTick(0)
-        timer = setInterval(() => setTick((t) => (t + 1) % GB_TICKS), 1200)
-      },
-      { threshold: 0.35 },
-    )
-    io.observe(el)
-    return () => {
-      io.disconnect()
-      clearInterval(timer)
-    }
-  }, [ref])
-  return tick
-}
-
-const GB_ICONS = [
-  <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0116 0" /></>,
-  <><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z" /><path d="M8.5 12l2.5 2.5 4.5-5" /></>,
-  <><path d="M3 6h11v10H3z" /><path d="M14 9h4l3 3v4h-7z" /><circle cx="7" cy="18" r="2" /><circle cx="17" cy="18" r="2" /></>,
-]
 const GB_POINT_ICONS = [
   <><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" /><circle cx="12" cy="12" r="3" /></>,
   <path d="M4 6h16M4 12h16M4 18h10" />,
   <><circle cx="6" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="M6 8.5V15a3 3 0 003 3h6.5" /><path d="M18 15.5V9a3 3 0 00-3-3H8.5" /></>,
 ]
+
+// Why RotexAI: generated code you cannot read (black box) beside the portal's run canvas (glass box). The canvas
+// is drawn by hand after the portal's RunCanvas/RunFlowNode: a card per step, coloured by step type, bordered by
+// state; edges take the colour of the card they leave and fade where the run did not go. A run log under it tells
+// the run in plain words, one line per step, while the card in focus rings and speaks in a bubble.
 const Svg = ({ size, children, ...rest }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...rest}>
     {children}
   </svg>
 )
 
+// Generated-looking code for the black box (illustrative only). A segment is plain text or [token class, text].
+const GB_CODE = [
+  [['k', 'export async function'], ' handleRestock(req, ctx) {'],
+  ['  ', ['k', 'const'], ' r = ', ['k', 'await'], ' db.q(', ['s', '`SELECT * FROM stk WHERE id=$1`'], ', [req.id])'],
+  ['  ', ['k', 'if'], ' (u?.r === ', ['n', '2'], ' && !f.ok) ', ['k', 'return'], ' h(', ['n', '409'], ')'],
+  ['  ', ['k', 'const'], ' apv = (x) => x.s > ', ['n', '3'], ' ? ok(x) : rj(x)'],
+  ['  ', ['k', 'await'], ' fetch(SUP_URL, { method: ', ['s', '"POST"'], ', body: enc(o) })'],
+  ['  ', ['s', '// TODO: handle partial approvals']],
+  ['  ', ['k', 'try'], ' { sync(o, { force: ', ['k', 'true'], ' }) } ', ['k', 'catch'], ' {}'],
+  ['  ', ['k', 'const'], ' q = rows.filter((z) => z.t && !z.d).map(mk)'],
+  ['  ', ['k', 'if'], ' (!cache[k]) cache[k] = ', ['k', 'await'], ' load(k, opts)'],
+  ['  ', ['k', 'return'], ' { ...state, pending: q.length > ', ['n', '0'], ' }'],
+  ['}'],
+  [''],
+]
+
+// Card order: 0 request, 1 decision, 2 manager, 3 send, 4 auto-approve (the branch this run does not take).
+const GB_TYPES = [
+  { color: '#10b981', icon: <><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><path d="m10 17 5-5-5-5" /><path d="M15 12H3" /></> },
+  { color: '#f59e0b', icon: <><path d="M6 3v12" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></> },
+  { color: '#ec4899', icon: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="m16 11 2 2 4-4" /></> },
+  { color: '#3b82f6', icon: <><circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" /></> },
+  { color: '#f97316', icon: <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" /> },
+]
+const GB_NODE_TIME = ['18:02', '18:02', '18:05', '18:05', '']
+const GB_EDGES = [[0, 1, null], [1, 2, 'yes'], [1, 4, 'no'], [2, 3, null], [4, 3, null]] // [from, to, label]
+const GB_TOP = 46 // headroom above the cards for the bubble
+// Two hand-placed layouts, fitted to the width like React Flow's fitView: wide (left to right), narrow (top down).
+const GB_LAYOUT = {
+  h: { w: 818, h: 286 + GB_TOP, dir: 'h', nh: 122,
+    nodes: [[12, 82 + GB_TOP, 164], [222, 82 + GB_TOP, 164], [432, 8 + GB_TOP, 164], [642, 82 + GB_TOP, 164], [432, 156 + GB_TOP, 164]] },
+  v: { w: 336, h: 674 + GB_TOP, dir: 'v', nh: 126,
+    nodes: [[78, 8 + GB_TOP, 180], [78, 186 + GB_TOP, 180], [8, 364 + GB_TOP, 150], [78, 540 + GB_TOP, 180], [178, 364 + GB_TOP, 150]] },
+}
+// The run, one entry per log line: each card's state, the card in focus and the log time.
+const GB_STEPS = [
+  { st: ['running', 'notReached', 'notReached', 'notReached', 'notReached'], focus: 0, at: '18:02:04' },
+  { st: ['done', 'running', 'notReached', 'notReached', 'notReached'], focus: 1, at: '18:02:05' },
+  { st: ['done', 'done', 'waiting', 'notReached', 'skipped'], focus: 2, at: '18:02:05' },
+  { st: ['done', 'done', 'done', 'notReached', 'skipped'], focus: 2, at: '18:05:31' },
+  { st: ['done', 'done', 'done', 'running', 'skipped'], focus: 3, at: '18:05:32' },
+  { st: ['done', 'done', 'done', 'done', 'skipped'], focus: 3, at: '18:05:33' },
+]
+const GB_LAST = GB_STEPS.length - 1
+
+function gbAnchors(L, from, to) {
+  const [fx, fy, fw] = L.nodes[from]
+  const [tx, ty, tw] = L.nodes[to]
+  if (L.dir === 'h') return [fx + fw, fy + L.nh / 2, tx, ty + L.nh / 2]
+  return [fx + fw / 2, fy + L.nh, tx + tw / 2, ty]
+}
+function gbCurve(L, [sx, sy, tx, ty]) {
+  if (L.dir === 'h') {
+    const d = Math.max(24, (tx - sx) / 2)
+    return `M${sx} ${sy}C${sx + d} ${sy} ${tx - d} ${ty} ${tx} ${ty}`
+  }
+  const d = Math.max(24, (ty - sy) / 2)
+  return `M${sx} ${sy}C${sx} ${sy + d} ${tx} ${ty - d} ${tx} ${ty}`
+}
+function gbEdgeState([from, to], st) {
+  if (from === 4 || to === 4) return st[4] === 'skipped' ? 'skip' : 'off'
+  if (st[to] === 'running' || st[to] === 'waiting') return 'flow'
+  return st[to] === 'done' ? '' : 'off'
+}
+
+// Picks the layout for the canvas width and the scale that fits it; ResizeObserver also fires once on observe.
+function useCanvasFit(ref) {
+  const [fit, setFit] = useState({ key: 'h', scale: 1, offset: 0 })
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !('ResizeObserver' in window)) return
+    const ro = new ResizeObserver(() => {
+      const avail = el.clientWidth - 24
+      const key = avail < 560 ? 'v' : 'h'
+      const L = GB_LAYOUT[key]
+      const scale = Math.min(1, avail / L.w)
+      setFit({ key, scale, offset: Math.max(0, (avail - L.w * scale) / 2) })
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [ref])
+  return fit
+}
+
+// The run: opens finished; while on screen it replays a line every 2.2 s with a 5 s hold at the end. Pointing at a
+// log line pins the canvas to that step and pauses. Reduced motion stays finished until the viewer presses Replay.
+function useRun(ref) {
+  const [reduce] = useState(() => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
+  const [at, setAt] = useState(GB_LAST)
+  const [pinned, setPinned] = useState(null)
+  const [playing, setPlaying] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || reduce || !('IntersectionObserver' in window)) return
+    const io = new IntersectionObserver(([e]) => setPlaying(e.isIntersecting), { threshold: 0.3 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [ref, reduce])
+  useEffect(() => {
+    if (!playing || pinned !== null || (reduce && at === GB_LAST)) return
+    const id = setTimeout(() => setAt((a) => (a === GB_LAST ? 0 : a + 1)), at === GB_LAST ? 5000 : 2200)
+    return () => clearTimeout(id)
+  }, [playing, pinned, at, reduce])
+  const replay = () => {
+    setPinned(null)
+    setAt(0)
+    setPlaying(true)
+  }
+  return { at, view: pinned ?? at, setPinned, replay }
+}
+
+function RunCanvas({ g, view, fit }) {
+  const L = GB_LAYOUT[fit.key]
+  const step = GB_STEPS[view]
+  const st = step.st
+  const [fx, fy, fw] = L.nodes[step.focus]
+  const cx = fx + fw / 2
+  const bx = Math.min(Math.max(cx, 105), L.w - 105)
+  return (
+    <div
+      className="gb-stage"
+      aria-hidden="true"
+      style={{ width: L.w, height: L.h, transform: `scale(${fit.scale})`, marginLeft: fit.offset, marginBottom: L.h * fit.scale - L.h }}
+    >
+      <svg className="gb-edges" width={L.w} height={L.h}>
+        {GB_EDGES.map((e) => {
+          const a = gbAnchors(L, e[0], e[1])
+          return (
+            <Fragment key={`${e[0]}-${e[1]}`}>
+              <path className={`gb-edge ${gbEdgeState(e, st)}`} stroke={GB_TYPES[e[0]].color} d={gbCurve(L, a)} />
+              <circle className="gb-port" cx={a[0]} cy={a[1]} r="3.5" />
+              <circle className="gb-port" cx={a[2]} cy={a[3]} r="3.5" />
+            </Fragment>
+          )
+        })}
+      </svg>
+      {GB_EDGES.filter((e) => e[2]).map((e) => {
+        const [sx, sy, tx, ty] = gbAnchors(L, e[0], e[1])
+        const cls = e[2] === 'yes' ? (st[2] !== 'notReached' ? 'on' : '') : st[4] === 'skipped' ? 'skip' : ''
+        return (
+          <span key={e[2]} className={`gb-elabel ${cls}`} style={{ left: (sx + tx) / 2, top: (sy + ty) / 2 }}>{g[e[2]]}</span>
+        )
+      })}
+      {L.nodes.map(([x, y, w], i) => {
+        const s = st[i]
+        const meta = s === 'done' ? [g.who[i], GB_NODE_TIME[i]].filter(Boolean).join(' · ') : s === 'waiting' ? g.who[i] : ''
+        return (
+          <div key={i} className={`gb-node ${s}${i === step.focus ? ' focus' : ''}`} style={{ left: x, top: y, width: w, height: L.nh }}>
+            <div className="gb-nhead">
+              <span className="gb-nicon" style={{ background: GB_TYPES[i].color }}><Svg size={14} strokeWidth="2">{GB_TYPES[i].icon}</Svg></span>
+              <span className="gb-nname">{g.nodes[i].name}</span>
+            </div>
+            <p className="gb-nsum">{g.nodes[i].summary}</p>
+            <div className="gb-nfoot">
+              <span className="gb-nstate">{g.states[s]}</span>
+              {meta && <span className="gb-nmeta">{meta}</span>}
+            </div>
+          </div>
+        )
+      })}
+      <div key={view} className="gb-bubble" style={{ left: bx, top: fy - 10, '--ax': `${cx - bx}px` }}>{g.steps[view].msg}</div>
+    </div>
+  )
+}
+
 function GlassBox() {
   const { t } = useLang()
-  const g = t.glassBox
-  const ref = useRef(null)
-  const tick = useGlassRun(ref)
-  const node = (at) => (tick === at ? 'now' : tick > at ? 'done' : '')
-  const link = (at) => (tick === at ? 'moving' : tick > at ? 'filled' : '')
-  const shown = tick >= 5 ? 3 : tick >= 3 ? 2 : tick >= 1 ? 1 : 0
-  const bars = [62, 80, 54, 70, 40, 76, 58, 66, 46, 30]
-  const indent = [0, 24, 24, 48, 48, 24, 24, 48, 24, 0]
+  const b = t.glassBox.black
+  const g = t.glassBox.glass
+  const runRef = useRef(null)
+  const canvasRef = useRef(null)
+  const { at, view, setPinned, replay } = useRun(runRef)
+  const fit = useCanvasFit(canvasRef)
+  const rowOf = (e) => e.target.closest?.('.gb-lrow:not(.future)')
+  const done = at === GB_LAST
   return (
     <>
-      <div className="gb">
-        <figure className="gb-col reveal">
-          <div className="gb-panel gb-black">
-            <span className="gb-status"><span className="gb-blink" aria-hidden="true" />{g.black.status}</span>
-            <div className="gb-code" aria-hidden="true">
-              <div className="gb-scroll">
-                {[...bars, ...bars].map((w, i) => (
-                  <span key={i} style={{ width: `${w}%`, marginLeft: indent[i % bars.length] }} />
-                ))}
+      <div className="gb-bento">
+        <figure className="tile glass gb-tile-black reveal">
+          <div className="gb-win gb-win-black" aria-hidden="true">
+            <div className="gb-chrome">
+              <span className="gb-dots"><i /><i /><i /></span>
+              <span className="gb-url">{b.url}</span>
+            </div>
+            <div className="gb-editor">
+              <div className="gb-tabbar"><b>{b.file}</b><span>{b.lines}</span></div>
+              <div className="gb-code">
+                <div className="gb-roll">
+                  {[...GB_CODE, ...GB_CODE].map((line, i) => (
+                    <div key={i} className="gb-row">
+                      <s>{(i % GB_CODE.length) + 412}</s>
+                      <span>{line.map((seg, j) => (typeof seg === 'string' ? seg : <span key={j} className={`gb-${seg[0]}`}>{seg[1]}</span>))}{line.length === 1 && line[0] === '' ? ' ' : null}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="gb-ask">
+                <span className="gb-q">?</span>
+                <p>{b.question}<span>{b.answer}</span></p>
               </div>
             </div>
-            <span className="gb-q" aria-hidden="true">?</span>
           </div>
           <figcaption>
-            <h3>{g.black.title}</h3>
-            <p>{g.black.line}</p>
+            <h3 className="title">{b.title}</h3>
+            <p className="body">{b.line}</p>
           </figcaption>
         </figure>
 
-        <figure ref={ref} className="gb-col gb-col-glass reveal" style={{ '--d': '0.12s' }}>
-          <div className="gb-panel gb-glass">
-            <span className="gb-status gb-status-live"><span className="gb-blink" aria-hidden="true" />{g.glass.status}</span>
-            <ol className="gb-flow">
-              {g.steps.map((st, i) => (
-                <Fragment key={i}>
-                  {i > 0 && (
-                    <li className={`gb-link ${link(i * 2)}`} aria-hidden="true">
-                      <span className="gb-fill" />
-                      <span className="gb-dot" />
+        <figure ref={runRef} className="tile glass gb-tile-glass reveal" style={{ '--d': '0.12s' }}>
+          <div className="gb-win gb-win-glass">
+            <div className="gb-chrome" aria-hidden="true">
+              <span className="gb-dots"><i /><i /><i /></span>
+              <span className="gb-url">
+                <Svg size={10} strokeWidth="2.4"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></Svg>
+                portal.rotexai.com
+              </span>
+              <span className="gb-sim">{g.sim}</span>
+            </div>
+            <div className="gb-app">
+              <div className="gb-appbar">
+                <span className="gb-cb">CB</span>
+                <span className="gb-crumb"><span>{g.crumb}</span><i>/</i><b>{g.wfName}</b></span>
+                <span className="gb-runid">{g.run}</span>
+                <span className={`gb-runpill ${done ? 'done' : 'running'}`}><i />{g.states[done ? 'done' : 'running']}</span>
+              </div>
+              <div ref={canvasRef} className={`gb-canvas${fit.key === 'v' ? ' v' : ''}`}>
+                <div className="gb-zoom" aria-hidden="true"><span>+</span><span>−</span></div>
+                <RunCanvas g={g} view={view} fit={fit} />
+              </div>
+              <div className="gb-runlog">
+                <div className="gb-runlog-head">
+                  <h4>{g.log.title}</h4>
+                  <span className="gb-runlog-hint">{g.log.hint}</span>
+                  <button type="button" className="gb-replay" onClick={replay}>
+                    <Svg size={13} strokeWidth="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></Svg>
+                    {g.log.replay}
+                  </button>
+                </div>
+                <ol
+                  className="gb-lrows"
+                  onPointerOver={(e) => { const r = e.pointerType === 'mouse' && rowOf(e); if (r) setPinned(+r.dataset.i) }}
+                  onPointerLeave={(e) => { if (e.pointerType === 'mouse') setPinned(null) }}
+                  onFocus={(e) => { const r = rowOf(e); if (r) setPinned(+r.dataset.i) }}
+                  onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setPinned(null) }}
+                >
+                  {g.steps.map((s, i) => (
+                    <li key={i}>
+                      <button
+                        type="button"
+                        data-i={i}
+                        className={`gb-lrow${i > at ? ' future' : ''}${i === view ? ' cur' : ''}`}
+                        tabIndex={i > at ? -1 : 0}
+                        aria-hidden={i > at ? true : undefined}
+                        aria-current={i === view ? 'step' : undefined}
+                        onClick={(e) => { if (e.nativeEvent.pointerType === 'touch' || e.nativeEvent.pointerType === 'pen') setPinned((p) => (p === i ? null : i)) }}
+                      >
+                        <time>{GB_STEPS[i].at}</time>
+                        <i style={{ background: GB_TYPES[GB_STEPS[i].focus].color }} />
+                        <span>{s.log}</span>
+                      </button>
                     </li>
-                  )}
-                  <li className={`gb-node ${node(i * 2 + 1)}`}>
-                    <span className="gb-tile">
-                      <Svg size={30} strokeWidth="1.8">{GB_ICONS[i]}</Svg>
-                      <span className="gb-check" aria-hidden="true"><Svg size={14} strokeWidth="3"><path d="M20 6L9 17l-5-5" /></Svg></span>
-                    </span>
-                    <span className="gb-who">{st.who}</span>
-                    <span className="gb-what">{st.what}</span>
-                  </li>
-                </Fragment>
-              ))}
-            </ol>
-            <div className="gb-log">
-              <span className="gb-log-label">{g.logLabel}</span>
-              <ul>
-                {g.log.map((row, i) => (
-                  <li key={i} className={i < shown ? 'shown' : ''}>
-                    <time>{row.at}</time>
-                    <span>{row.text}</span>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
           <figcaption>
-            <h3>{g.glass.title}</h3>
-            <p>{g.glass.line}</p>
+            <h3 className="title">{g.title}</h3>
+            <p className="body">{g.line}</p>
           </figcaption>
         </figure>
       </div>
 
       <ul className="gb-points reveal">
-        {g.points.map((pt, i) => (
+        {t.glassBox.points.map((p, i) => (
           <li key={i}>
-            <Svg size={18} strokeWidth="1.9">{GB_POINT_ICONS[i]}</Svg>
-            {pt}
+            <Svg size={20} strokeWidth="1.9">{GB_POINT_ICONS[i]}</Svg>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.line}</p>
+            </div>
           </li>
         ))}
       </ul>
@@ -583,7 +756,8 @@ function Page() {
 
         <section id="why" className="section section-tight">
           <div className="wrap">
-            <header className="section-head section-head-center gb-head reveal">
+            <header className="section-head gb-head reveal">
+              <span className="label">{t.glassBox.label}</span>
               <h2 className="h2">
                 <Words text={t.glassBox.titleA} /> <span className="gb-dim"><Words text={t.glassBox.titleB} start={0.2} /></span>
               </h2>
