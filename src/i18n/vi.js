@@ -227,9 +227,14 @@ export default {
     stage: 'Giai đoạn',
     stageValue: 'Pre-seed',
     raising: 'Đang huy động',
-    raisingValue: '[Số tiền]',
+    raisingValue: '150 triệu đồng, cho 6 tháng',
     funds: 'Mục đích sử dụng vốn',
-    fundsValue: '[2–3 mục đích chính]',
+    fundsValue: [
+      { use: 'Chi phí sinh hoạt cho nhà sáng lập, 10 triệu đồng mỗi tháng', amount: '60 tr' },
+      { use: 'Tìm những khách hàng đầu tiên', amount: '30 tr' },
+      { use: 'Hạ tầng, 5 triệu đồng mỗi tháng', amount: '30 tr' },
+      { use: 'Dự phòng', amount: '30 tr' },
+    ],
   },
   hub: {
     label: 'Bước tiếp theo',

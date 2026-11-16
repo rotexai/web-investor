@@ -834,8 +834,17 @@ function Page() {
               <Heading label={t.round.label} text={t.round.title} />
               <dl className="terms reveal">
                 <div><dt>{t.round.stage}</dt><dd>{t.round.stageValue}</dd></div>
-                <div><dt>{t.round.raising}</dt><dd><Slot>{t.round.raisingValue}</Slot></dd></div>
-                <div><dt>{t.round.funds}</dt><dd><Slot>{t.round.fundsValue}</Slot></dd></div>
+                <div><dt>{t.round.raising}</dt><dd>{t.round.raisingValue}</dd></div>
+                <div>
+                  <dt>{t.round.funds}</dt>
+                  <dd>
+                    <ul className="funds">
+                      {t.round.fundsValue.map((f) => (
+                        <li key={f.use}><span>{f.use}</span><span className="funds-amount">{f.amount}</span></li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
               </dl>
             </div>
           </div>

@@ -608,6 +608,9 @@ p { text-wrap: pretty; }
 .terms > div:first-child { border-top: 1px solid var(--line); }
 .terms dt { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
 .terms dd { min-width: 0; }
+.funds { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.funds li { display: flex; justify-content: space-between; gap: 16px; }
+.funds-amount { font-family: var(--font-mono); white-space: nowrap; color: var(--fg); }
 
 /* ===== Hub: a second aurora rises behind the deck request ===== */
 .hub { overflow: hidden; isolation: isolate; padding-block: 120px 140px; }

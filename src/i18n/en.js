@@ -227,9 +227,14 @@ export default {
     stage: 'Stage',
     stageValue: 'Pre-seed',
     raising: 'Raising',
-    raisingValue: '[Amount]',
+    raisingValue: '150 million VND, for 6 months',
     funds: 'Use of funds',
-    fundsValue: '[Top 2–3 uses]',
+    fundsValue: [
+      { use: 'Founder runway, 10 million VND a month', amount: '60M' },
+      { use: 'Finding the first customers', amount: '30M' },
+      { use: 'Infrastructure, 5 million VND a month', amount: '30M' },
+      { use: 'Reserve', amount: '30M' },
+    ],
   },
   hub: {
     label: 'Where to next',
