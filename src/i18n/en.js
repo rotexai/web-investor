@@ -202,16 +202,20 @@ export default {
   market: {
     label: 'Market',
     title: 'Who pays for this',
-    size: '[Market size]',
-    count: '[Number of target businesses, region]',
-    countAfter: 'run without management software today. RotexAI starts with Vietnamese shops, cafés and small workshops.',
+    size: '817,000 SMEs',
+    count: 'Plus 5.2 million household businesses. 93.6% of the SMEs are micro or small. Most already pay for accounting software (88% of surveyed firms), but only 15% run an ERP for the rest of the business.',
+    countAfter: 'RotexAI starts with Vietnamese shops, cafés and small workshops.',
     source: 'Source:',
-    sourceSlot: '[Source, year]',
+    sourceSlot: 'Statistics Office, Enterprise White Book 2025 and Statistical Summary Book 2025; Ministry of Industry and Trade, E-commerce White Book 2022',
   },
   whyNow: {
     label: 'Why now',
     title: 'Why this works now and not before',
-    reasons: ['[Reason 1: AI agents can now build and run business software end to end]', '[Reason 2]', '[Reason 3]'],
+    reasons: [
+      'AI can now build and change business software from a plain description of the shop. Packaged ERP fails small firms mainly because its processes do not fit theirs (Jegorova & Grabis, 2025; Leyh, 2014). RotexAI builds the software around each shop’s own way of working.',
+      'The state is paying for it: Decision 433/QĐ-TTg (March 2026) targets at least 300,000 SMEs adopting digital solutions by 2030, with vouchers and "use first, pay later".',
+      'The tax rules changed on 1 January 2026: lump-sum tax for household businesses ended, and those above VND 1 billion in revenue must issue e-invoices (Resolution 198/2025/QH15; Decree 141/2026).',
+    ],
   },
   people: {
     label: 'Team',

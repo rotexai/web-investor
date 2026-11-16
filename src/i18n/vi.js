@@ -202,16 +202,20 @@ export default {
   market: {
     label: 'Thị trường',
     title: 'Ai sẽ trả tiền cho giải pháp này',
-    size: '[Quy mô thị trường]',
-    count: '[Số doanh nghiệp mục tiêu, khu vực]',
-    countAfter: 'hiện đang vận hành mà không có phần mềm quản lý. RotexAI bắt đầu từ các cửa hàng, quán cà phê và xưởng nhỏ tại Việt Nam.',
+    size: '817.000 doanh nghiệp nhỏ và vừa',
+    count: 'Cộng thêm 5,2 triệu hộ kinh doanh. Trong số doanh nghiệp nhỏ và vừa, 93,6% là doanh nghiệp siêu nhỏ hoặc nhỏ. Phần lớn đã trả phí cho phần mềm kế toán (88% doanh nghiệp được khảo sát), nhưng chỉ 15% vận hành ERP cho phần còn lại của doanh nghiệp.',
+    countAfter: 'RotexAI bắt đầu từ các cửa hàng, quán cà phê và xưởng nhỏ tại Việt Nam.',
     source: 'Nguồn:',
-    sourceSlot: '[Nguồn, năm]',
+    sourceSlot: 'Cục Thống kê, Sách trắng doanh nghiệp Việt Nam 2025 và Niên giám thống kê tóm tắt 2025; Bộ Công Thương, Sách trắng Thương mại điện tử Việt Nam 2022',
   },
   whyNow: {
     label: 'Vì sao là bây giờ',
     title: 'Vì sao giải pháp này khả thi bây giờ, không phải trước đây',
-    reasons: ['[Lý do 1: AI agent giờ có thể xây dựng và vận hành phần mềm doanh nghiệp từ đầu đến cuối]', '[Lý do 2]', '[Lý do 3]'],
+    reasons: [
+      'AI giờ đây đã có thể xây dựng và thay đổi phần mềm doanh nghiệp từ một mô tả bằng lời thường về cửa hàng. ERP đóng gói sẵn thất bại với doanh nghiệp nhỏ chủ yếu vì quy trình của nó không khớp với quy trình của họ (Jegorova & Grabis, 2025; Leyh, 2014). RotexAI xây dựng phần mềm theo đúng cách làm việc riêng của từng cửa hàng.',
+      'Nhà nước đang chi trả cho việc này: Quyết định 433/QĐ-TTg (tháng 3 năm 2026) đặt mục tiêu ít nhất 300.000 doanh nghiệp nhỏ và vừa ứng dụng giải pháp chuyển đổi số đến năm 2030, kèm voucher và “dùng trước - trả sau”.',
+      'Quy định thuế thay đổi từ ngày 1 tháng 1 năm 2026: thuế khoán đối với hộ kinh doanh không còn áp dụng, và các hộ có doanh thu trên 1 tỷ đồng phải xuất hóa đơn điện tử (Nghị quyết 198/2025/QH15; Nghị định 141/2026).',
+    ],
   },
   people: {
     label: 'Đội ngũ',

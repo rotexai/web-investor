@@ -801,14 +801,14 @@ function Page() {
           <div className="wrap split">
             <div className="split-col">
               <Heading label={t.market.label} text={t.market.title} />
-              <p className="figure reveal"><Slot>{t.market.size}</Slot></p>
-              <p className="body reveal"><Slot>{t.market.count}</Slot> {t.market.countAfter}</p>
-              <p className="source reveal">{t.market.source} <Slot>{t.market.sourceSlot}</Slot></p>
+              <p className="figure reveal">{t.market.size}</p>
+              <p className="body reveal">{t.market.count} {t.market.countAfter}</p>
+              <p className="source reveal">{t.market.source} {t.market.sourceSlot}</p>
             </div>
             <div className="split-col">
               <Heading label={t.whyNow.label} text={t.whyNow.title} />
               <ul className="reasons reveal">
-                {t.whyNow.reasons.map((r, i) => <li key={i}><Slot>{r}</Slot></li>)}
+                {t.whyNow.reasons.map((r, i) => <li key={i}>{r}</li>)}
               </ul>
             </div>
           </div>
