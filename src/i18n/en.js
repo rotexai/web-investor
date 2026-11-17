@@ -14,7 +14,7 @@ export default {
     language: 'Language',
   },
   cta: {
-    deck: 'Request the deck',
+    deck: 'Read the deck',
     product: 'Try the live product',
   },
   hero: {
@@ -32,8 +32,8 @@ export default {
   thesis: {
     label: 'Why this matters',
     title: 'Most small businesses still run on paper and chat.',
-    lead: 'Custom software costs more than they can spend.',
-    leadStrong: 'AI agents bring that cost close to zero.',
+    lead: 'Software that covers the whole job starts at about 100 million VND a year, and every change is a partner project.',
+    leadStrong: 'RotexAI builds it from the owner’s own words, and the owner changes it the same way.',
     todayAria: 'Today: a stock notebook, a chat thread and a spreadsheet',
     today: 'Today',
     todayCaption: 'Notebooks, chat threads, spreadsheets',
@@ -58,7 +58,7 @@ export default {
       },
       {
         title: 'Get a working app',
-        line: 'AI agents build the whole app in minutes, for the laptop in the office and the phone on the shop floor, and check it before it goes live.',
+        line: 'AI agents build the whole app, for the laptop in the office and the phone on the shop floor, and check it before it goes live.',
         alt: 'The bakery app being assembled part by part, then shown on laptop and phone',
       },
       {
@@ -80,7 +80,7 @@ export default {
       question: 'Does a manager approve restocks?',
       answer: 'Only the code knows.',
       title: 'Black box',
-      line: 'Other platforms hand over generated code. You have to trust the AI.',
+      line: 'AI app builders such as Lovable and Replit hand over generated code. You have to trust the AI.',
     },
     glass: {
       sim: 'Simulated interface',
@@ -199,14 +199,26 @@ export default {
     ],
     note: 'Product scenes on this page are the RotexAI portal rebuilt from its source code for clarity. They are a simulation, not a screen recording.',
   },
+  // Groups, names and figures from wiki Pillar 7 (2026-11-17), researched from public sources.
+  competition: {
+    title: 'Who we compete with',
+    lead: 'Of 26 products we could test, none fits Vietnam and lets the owner make a change alone.',
+    groups: [
+      { name: 'Excel, Zalo and paper', role: 'Met most', line: 'Free and familiar, yet Excel costs a 15-person distributor about 36.2 million VND a year in staff time and errors.' },
+      { name: 'MISA AMIS, Base.vn, Odoo', role: 'Compared with', line: 'Packaged ERP fits Vietnamese tax and e-invoices, but a change is a partner project. Full scope starts at about 100 million VND a year.' },
+      { name: 'KiotViet, Sapo', role: 'Complement', line: 'Sales apps run the till. RotexAI runs approvals and purchasing around the till the shop keeps.' },
+      { name: 'Lovable, Replit, Airtable', role: 'Minor', line: 'AI app builders and low-code let the owner change the app, but know nothing of Vietnamese business.' },
+    ],
+    source: 'RotexAI research on 38 competitors from public sources, 17 Nov 2026.',
+  },
   market: {
     label: 'Market',
     title: 'Who pays for this',
     size: '817,000 SMEs',
-    count: 'Plus 5.2 million household businesses. 93.6% of the SMEs are micro or small. Most already pay for accounting software (88% of surveyed firms), but only 15% run an ERP for the rest of the business.',
+    count: 'Plus 5.17 million individual business establishments. 93.6% of the SMEs are micro or small. 88% of surveyed firms use accounting software, but only 15% run an ERP for the rest of the business.',
     countAfter: 'RotexAI starts with Vietnamese shops, cafés and small workshops.',
     source: 'Source:',
-    sourceSlot: 'Statistics Office, Enterprise White Book 2025 and Statistical Summary Book 2025; Ministry of Industry and Trade, E-commerce White Book 2022',
+    sourceSlot: 'Statistics Office, Enterprise White Book 2025 and Statistical Summary Book 2025; Ministry of Industry and Trade, E-commerce White Book 2022 (2021 survey)',
   },
   whyNow: {
     label: 'Why now',
@@ -243,17 +255,13 @@ export default {
   hub: {
     label: 'Where to next',
     title: 'Pick the next step',
-    deckTitle: 'Request the deck',
-    deckBody: 'Tell us who you are. We send the deck by email, and data room access after a first conversation.',
+    deckTitle: 'Talk to the founder',
+    deckBody: 'Read the deck, then tell us who you are. We reply by email to set up a call, and share the data room after it.',
     routes: {
       product: { title: 'Try the live product', line: 'Describe a shop and watch RotexAI build its app.', label: 'portal.rotexai.com' },
       call: { title: 'Book a call', line: '30 minutes with the founder.', label: '[Calendar link] · link pending' },
-      onePager: {
-        title: 'Walkthrough and one-pager',
-        line: 'The product end to end in two and a half minutes, on this page. One-pager to follow.',
-        label: 'Watch the walkthrough · [One-pager link] pending',
-      },
-      dataRoom: { title: 'Data room', line: 'Financials and cap table, shared after your deck request is approved.', label: 'By invitation' },
+      deck: { title: 'Read the deck', line: 'The pitch in 13 slides, in English and Vietnamese, with an AI-voiced version.', label: 'deck.rotexai.com' },
+      dataRoom: { title: 'Data room', line: 'Financials and cap table, shared after a first conversation.', label: 'By invitation' },
     },
   },
   form: {
@@ -262,13 +270,13 @@ export default {
     email: 'Work email',
     note: 'Anything we should know',
     optional: '(optional)',
-    submit: 'Request the deck',
+    submit: 'Send',
     sending: 'Sending…',
-    sentTitle: 'Request received',
-    sentBody: 'We review every request and reply by email with the deck.',
-    offlineBefore: 'Deck requests are not connected yet. Email',
-    offlineAfter: 'and we will send it.',
-    errorBefore: 'The request did not go through. Try again, or email',
+    sentTitle: 'Message received',
+    sentBody: 'We read every message and reply by email.',
+    offlineBefore: 'This form is not connected yet. Email',
+    offlineAfter: 'and we will reply.',
+    errorBefore: 'The message did not go through. Try again, or email',
     errorAfter: '.',
   },
 }

@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { CONTACT_EMAIL, DECK_REQUEST_URL, FOUNDER_URL, PORTAL_URL, ROUTES } from './config.js'
+import { CONTACT_EMAIL, DECK_REQUEST_URL, DECK_URL, FOUNDER_URL, PORTAL_URL, ROUTES } from './config.js'
 import { COPY, LangContext, initialLang, saveLang, useLang } from './i18n/index.js'
 import './investor.css'
 
@@ -321,6 +321,27 @@ function DeckForm() {
         </p>
       )}
     </form>
+  )
+}
+
+function Competition() {
+  const { t } = useLang()
+  const c = t.competition
+  return (
+    <div className="comp reveal">
+      <h3 className="h3 comp-title">{c.title}</h3>
+      <p className="lead">{c.lead}</p>
+      <ul className="comp-groups">
+        {c.groups.map((g) => (
+          <li key={g.name}>
+            <span className="label label-quiet">{g.role}</span>
+            <h4>{g.name}</h4>
+            <p>{g.line}</p>
+          </li>
+        ))}
+      </ul>
+      <p className="source">{c.source}</p>
+    </div>
   )
 }
 
@@ -695,7 +716,7 @@ function Page() {
             <a href="#team">{t.nav.team}</a>
           </nav>
           <LangSwitch />
-          <a href="#next" className="btn btn-primary btn-sm bar-cta">{t.cta.deck}</a>
+          <a href={DECK_URL} className="btn btn-primary btn-sm bar-cta" target="_blank" rel="noreferrer">{t.cta.deck}</a>
         </div>
       </header>
 
@@ -710,7 +731,7 @@ function Page() {
             <h1 className="display line-b"><Words text={t.hero.lineB} start={0.15} step={0.08} /></h1>
             <p className="lead hero-after">{t.hero.lead}</p>
             <div className="hero-actions hero-after">
-              <a href="#next" className="btn btn-primary">{t.cta.deck}</a>
+              <a href={DECK_URL} className="btn btn-primary" target="_blank" rel="noreferrer">{t.cta.deck}</a>
               <a href={PORTAL_URL} className="btn btn-ghost" target="_blank" rel="noreferrer">{t.cta.product}</a>
             </div>
           </div>
@@ -764,6 +785,7 @@ function Page() {
               <p className="lead">{t.glassBox.lead}</p>
             </header>
             <GlassBox />
+            <Competition />
           </div>
         </section>
 

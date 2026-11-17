@@ -543,7 +543,16 @@ p { text-wrap: pretty; }
   50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--state) 16%, transparent), 0 8px 18px -12px rgba(27, 30, 46, .3); }
 }
 
-@media (max-width: 900px) { .gb-bento { grid-template-columns: 1fr; } }
+/* Who we compete with (wiki Pillar 7), under the glass box */
+.comp { margin-top: 72px; }
+.comp-title { margin-bottom: 10px; }
+.comp-groups { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px 0 16px; padding: 0; list-style: none; }
+.comp-groups li { display: flex; flex-direction: column; gap: 6px; padding-top: 18px; border-top: 1px solid var(--line); }
+.comp-groups h4 { font-size: 16px; font-weight: 700; line-height: 1.35; }
+.comp-groups p { font-size: var(--fs-small); color: var(--muted); }
+
+@media (max-width: 900px) { .gb-bento { grid-template-columns: 1fr; } .comp-groups { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .comp { margin-top: 48px; } .comp-groups { grid-template-columns: 1fr; gap: 0; } .comp-groups li { padding-block: 14px; } }
 @media (max-width: 760px) {
   .gb-points { grid-template-columns: 1fr; gap: 0; margin-top: 20px; }
   .gb-points li { padding-block: 14px; }

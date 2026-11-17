@@ -14,7 +14,7 @@ export default {
     language: 'Ngôn ngữ',
   },
   cta: {
-    deck: 'Yêu cầu pitch deck',
+    deck: 'Đọc pitch deck',
     product: 'Dùng thử sản phẩm thật',
   },
   hero: {
@@ -32,8 +32,8 @@ export default {
   thesis: {
     label: 'Vì sao điều này quan trọng',
     title: 'Phần lớn doanh nghiệp nhỏ vẫn vận hành bằng giấy và tin nhắn.',
-    lead: 'Phần mềm đặt làm riêng vượt quá khả năng chi trả của họ.',
-    leadStrong: 'AI agent đưa chi phí đó về gần bằng không.',
+    lead: 'Phần mềm bao trọn công việc có giá từ khoảng 100 triệu đồng mỗi năm, và mỗi thay đổi đều là một dự án với đối tác.',
+    leadStrong: 'RotexAI xây dựng từ chính lời mô tả của chủ doanh nghiệp, và chủ doanh nghiệp cũng thay đổi theo cách đó.',
     todayAria: 'Hôm nay: sổ ghi hàng tồn, một luồng chat và bảng tính',
     today: 'Hôm nay',
     todayCaption: 'Sổ ghi chép, luồng chat, bảng tính',
@@ -58,7 +58,7 @@ export default {
       },
       {
         title: 'Nhận một ứng dụng chạy thật',
-        line: 'AI agent xây dựng toàn bộ ứng dụng trong vài phút, cho laptop ở văn phòng và điện thoại dùng tại cửa hàng, rồi kiểm tra trước khi đưa vào vận hành.',
+        line: 'AI agent xây dựng toàn bộ ứng dụng, cho laptop ở văn phòng và điện thoại dùng tại cửa hàng, rồi kiểm tra trước khi đưa vào vận hành.',
         alt: 'Ứng dụng tiệm bánh được lắp ráp từng phần, rồi hiển thị trên laptop và điện thoại',
       },
       {
@@ -80,7 +80,7 @@ export default {
       question: 'Quản lý có duyệt nhập hàng không?',
       answer: 'Chỉ có mã nguồn biết.',
       title: 'Hộp đen',
-      line: 'Nền tảng khác chỉ giao mã đã tạo. Bạn phải tin vào AI.',
+      line: 'Công cụ tạo app bằng AI như Lovable và Replit giao lại mã đã tạo. Bạn phải tin vào AI.',
     },
     glass: {
       sim: 'Mô phỏng giao diện',
@@ -199,14 +199,25 @@ export default {
     ],
     note: 'Các cảnh sản phẩm trên trang này là portal RotexAI được dựng lại từ mã nguồn để dễ theo dõi. Đây là bản mô phỏng, không phải bản ghi màn hình.',
   },
+  competition: {
+    title: 'Chúng tôi cạnh tranh với ai',
+    lead: 'Trong 26 sản phẩm chúng tôi có thể thử, không sản phẩm nào vừa với Việt Nam và cho phép chủ cửa hàng tự thay đổi.',
+    groups: [
+      { name: 'Excel, Zalo và giấy tờ', role: 'Gặp nhiều nhất', line: 'Miễn phí và quen thuộc, nhưng Excel khiến một nhà phân phối 15 người tốn khoảng 36,2 triệu đồng mỗi năm cho thời gian nhân viên và sai sót.' },
+      { name: 'MISA AMIS, Base.vn, Odoo', role: 'So sánh với', line: 'ERP đóng gói khớp với thuế và hóa đơn điện tử Việt Nam, nhưng mỗi thay đổi là một dự án với đối tác. Gói đầy đủ bắt đầu từ khoảng 100 triệu đồng mỗi năm.' },
+      { name: 'KiotViet, Sapo', role: 'Bổ trợ', line: 'Phần mềm bán hàng vận hành quầy thu ngân. RotexAI lo phê duyệt và mua hàng quanh quầy mà cửa hàng vẫn giữ.' },
+      { name: 'Lovable, Replit, Airtable', role: 'Đối thủ phụ', line: 'Công cụ tạo app bằng AI và low-code cho phép chủ cửa hàng thay đổi ứng dụng, nhưng không biết gì về kinh doanh Việt Nam.' },
+    ],
+    source: 'Nghiên cứu của RotexAI về 38 đối thủ từ nguồn công khai, ngày 17 tháng 11 năm 2026.',
+  },
   market: {
     label: 'Thị trường',
     title: 'Ai sẽ trả tiền cho giải pháp này',
     size: '817.000 doanh nghiệp nhỏ và vừa',
-    count: 'Cộng thêm 5,2 triệu hộ kinh doanh. Trong số doanh nghiệp nhỏ và vừa, 93,6% là doanh nghiệp siêu nhỏ hoặc nhỏ. Phần lớn đã trả phí cho phần mềm kế toán (88% doanh nghiệp được khảo sát), nhưng chỉ 15% vận hành ERP cho phần còn lại của doanh nghiệp.',
+    count: 'Cộng thêm 5,17 triệu cơ sở kinh doanh cá thể. Trong số doanh nghiệp nhỏ và vừa, 93,6% là doanh nghiệp siêu nhỏ hoặc nhỏ. 88% doanh nghiệp được khảo sát dùng phần mềm kế toán, nhưng chỉ 15% vận hành ERP cho phần còn lại của doanh nghiệp.',
     countAfter: 'RotexAI bắt đầu từ các cửa hàng, quán cà phê và xưởng nhỏ tại Việt Nam.',
     source: 'Nguồn:',
-    sourceSlot: 'Cục Thống kê, Sách trắng doanh nghiệp Việt Nam 2025 và Niên giám thống kê tóm tắt 2025; Bộ Công Thương, Sách trắng Thương mại điện tử Việt Nam 2022',
+    sourceSlot: 'Cục Thống kê, Sách trắng doanh nghiệp Việt Nam 2025 và Niên giám thống kê tóm tắt 2025; Bộ Công Thương, Sách trắng Thương mại điện tử Việt Nam 2022 (khảo sát năm 2021)',
   },
   whyNow: {
     label: 'Vì sao là bây giờ',
@@ -243,17 +254,13 @@ export default {
   hub: {
     label: 'Bước tiếp theo',
     title: 'Chọn bước tiếp theo',
-    deckTitle: 'Yêu cầu pitch deck',
-    deckBody: 'Hãy cho chúng tôi biết bạn là ai. Chúng tôi gửi pitch deck qua email, và cấp quyền truy cập phòng dữ liệu sau buổi trao đổi đầu tiên.',
+    deckTitle: 'Trao đổi với nhà sáng lập',
+    deckBody: 'Đọc pitch deck, rồi cho chúng tôi biết bạn là ai. Chúng tôi trả lời qua email để sắp xếp một cuộc gọi, và chia sẻ phòng dữ liệu sau đó.',
     routes: {
       product: { title: 'Dùng thử sản phẩm thật', line: 'Mô tả một cửa hàng và xem RotexAI xây dựng ứng dụng cho cửa hàng đó.', label: 'portal.rotexai.com' },
       call: { title: 'Đặt lịch gọi', line: '30 phút trao đổi với nhà sáng lập.', label: '[Liên kết lịch] · chưa có liên kết' },
-      onePager: {
-        title: 'Video hướng dẫn và tóm tắt một trang',
-        line: 'Toàn bộ sản phẩm trong hai phút rưỡi, ngay trên trang này. Bản tóm tắt một trang sẽ được gửi sau.',
-        label: 'Xem video · [Liên kết tóm tắt một trang] sắp có',
-      },
-      dataRoom: { title: 'Phòng dữ liệu (data room)', line: 'Báo cáo tài chính và bảng cơ cấu cổ phần, được chia sẻ sau khi yêu cầu pitch deck của bạn được duyệt.', label: 'Theo lời mời' },
+      deck: { title: 'Đọc pitch deck', line: 'Bài thuyết trình 13 trang, bằng tiếng Anh và tiếng Việt, có bản thuyết minh bằng giọng AI.', label: 'deck.rotexai.com' },
+      dataRoom: { title: 'Phòng dữ liệu (data room)', line: 'Báo cáo tài chính và bảng cơ cấu cổ phần, được chia sẻ sau buổi trao đổi đầu tiên.', label: 'Theo lời mời' },
     },
   },
   form: {
@@ -262,13 +269,13 @@ export default {
     email: 'Email công việc',
     note: 'Điều gì khác chúng tôi nên biết',
     optional: '(không bắt buộc)',
-    submit: 'Yêu cầu pitch deck',
+    submit: 'Gửi',
     sending: 'Đang gửi…',
-    sentTitle: 'Đã nhận yêu cầu',
-    sentBody: 'Chúng tôi xem xét từng yêu cầu và phản hồi qua email kèm pitch deck.',
-    offlineBefore: 'Hiện chưa thể gửi yêu cầu pitch deck qua biểu mẫu. Vui lòng gửi email tới',
-    offlineAfter: 'và chúng tôi sẽ gửi tài liệu cho bạn.',
-    errorBefore: 'Yêu cầu chưa được gửi đi. Hãy thử lại, hoặc gửi email tới',
+    sentTitle: 'Đã nhận tin nhắn',
+    sentBody: 'Chúng tôi đọc mọi tin nhắn và trả lời qua email.',
+    offlineBefore: 'Biểu mẫu này chưa được kết nối. Hãy gửi email tới',
+    offlineAfter: 'và chúng tôi sẽ trả lời.',
+    errorBefore: 'Tin nhắn chưa được gửi. Hãy thử lại, hoặc gửi email tới',
     errorAfter: '.',
   },
 }
