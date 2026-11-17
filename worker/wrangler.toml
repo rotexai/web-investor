@@ -21,4 +21,4 @@ simple = { limit = 3, period = 60 }
 # Daily counters (R5). Create once with `npx wrangler kv namespace create COUNTS` and put the id here.
 [[kv_namespaces]]
 binding = "COUNTS"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "766e37293eeb4f38830ca311ab5a4bdb"
