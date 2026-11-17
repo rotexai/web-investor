@@ -654,6 +654,11 @@ p { text-wrap: pretty; }
 .field input:focus, .field textarea:focus { outline: none; border-color: var(--lavender); box-shadow: 0 0 0 3px rgba(163, 144, 255, 0.18); }
 .deck-form .btn { align-self: flex-start; margin-top: 4px; }
 .form-note { font-size: var(--fs-small); color: var(--muted); }
+/* What the form records with each message (spec 261118, R12). */
+.form-privacy { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+/* Decoy field for bots (spec 261118): off screen, out of the tab order. */
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.turnstile:empty { display: none; }
 .form-note-error { color: #ffb38a; }
 .deck-done { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
 

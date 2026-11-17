@@ -33,6 +33,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Founder form (spec 261118): repo variables; unset keeps the "email us" fallback.
+          VITE_DECK_REQUEST_URL: ${{ vars.VITE_DECK_REQUEST_URL }}
+          VITE_TURNSTILE_SITE_KEY: ${{ vars.VITE_TURNSTILE_SITE_KEY }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

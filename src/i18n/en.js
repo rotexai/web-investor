@@ -276,7 +276,10 @@ export default {
     sentBody: 'We read every message and reply by email.',
     offlineBefore: 'This form is not connected yet. Email',
     offlineAfter: 'and we will reply.',
+    busyBefore: 'We could not send this right now. Email',
+    busyAfter: 'and we will reply.',
     errorBefore: 'The message did not go through. Try again, or email',
     errorAfter: '.',
+    notice: 'To keep this form free of spam, we record your IP address, browser and device with your message. They go only to our founder and are not stored.',
   },
 }

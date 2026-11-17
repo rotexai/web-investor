@@ -1,5 +1,8 @@
 node_modules/
 dist/
+# Worker local secrets and state (spec 261118): never commit.
+.dev.vars*
+.wrangler/
 .env
 .env.local
 .DS_Store

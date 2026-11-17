@@ -7,6 +7,8 @@ export const DECK_URL = 'https://deck.rotexai.com'
 
 // The founder form POSTs JSON { name, firm, email, note, lang } here. Unset: the form says it is not connected yet.
 export const DECK_REQUEST_URL = import.meta.env.VITE_DECK_REQUEST_URL || null
+// Cloudflare Turnstile public site key (spec 261118). Unset: the form shows the email fallback instead of sending.
+export const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || null
 
 export const ROUTES = [
   { id: 'deck', href: DECK_URL },

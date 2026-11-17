@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
-import { CONTACT_EMAIL, DECK_REQUEST_URL, DECK_URL, FOUNDER_URL, PORTAL_URL, ROUTES } from './config.js'
+import { CONTACT_EMAIL, DECK_REQUEST_URL, DECK_URL, FOUNDER_URL, PORTAL_URL, ROUTES, TURNSTILE_SITE_KEY } from './config.js'
 import { COPY, LangContext, initialLang, saveLang, useLang } from './i18n/index.js'
 import './investor.css'
 
@@ -253,18 +253,88 @@ function Film() {
   )
 }
 
+// Turnstile (spec 261118): the script loads once, the widget runs a check only when Cloudflare needs one.
+let turnstileScript = null
+function loadTurnstile() {
+  turnstileScript ??= new Promise((resolve, reject) => {
+    const s = document.createElement('script')
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+    s.async = true
+    s.onload = () => resolve(window.turnstile)
+    s.onerror = reject
+    document.head.appendChild(s)
+  })
+  return turnstileScript
+}
+
+const LIVE = Boolean(DECK_REQUEST_URL && TURNSTILE_SITE_KEY)
+
+// The page that linked here, read once at load (later in-page navigation would overwrite it).
+const ARRIVED = typeof document === 'undefined' ? '' : document.referrer
+
+/** Browser details for the sender check in the founder's email (spec 261118, R13). Each read may fail; skip it then. */
+function clientInfo() {
+  const out = {}
+  const tryIt = (fn) => {
+    try {
+      fn()
+    } catch {
+      /* not available in this browser */
+    }
+  }
+  tryIt(() => (out.tz = Intl.DateTimeFormat().resolvedOptions().timeZone))
+  tryIt(() => (out.offset = new Date().getTimezoneOffset()))
+  tryIt(() => (out.screen = { w: window.screen.width, h: window.screen.height }))
+  tryIt(() => (out.langs = [...navigator.languages].slice(0, 5)))
+  if (ARRIVED) out.arrived = ARRIVED
+  return out
+}
+
 function DeckForm() {
   const { t, lang } = useLang()
   const f = t.form
   const [state, setState] = useState('idle')
+  const started = useRef(0)
+  const box = useRef(null)
+  const widget = useRef(null)
+  const token = useRef('')
+
+  // Render time, for the Worker's too-fast-to-be-human check.
+  useEffect(() => {
+    started.current = Date.now()
+  }, [])
+
+  useEffect(() => {
+    if (!LIVE) return
+    let gone = false
+    loadTurnstile()
+      .then((ts) => {
+        if (gone || !box.current || !ts) return
+        widget.current = ts.render(box.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          appearance: 'interaction-only',
+          language: lang,
+          callback: (v) => (token.current = v),
+          'expired-callback': () => (token.current = ''),
+          'error-callback': () => (token.current = ''),
+        })
+      })
+      .catch(() => {})
+    return () => {
+      gone = true
+      if (widget.current != null) window.turnstile?.remove(widget.current)
+      widget.current = null
+      token.current = ''
+    }
+  }, [lang])
 
   async function submit(e) {
     e.preventDefault()
-    if (!DECK_REQUEST_URL) {
+    if (!LIVE) {
       setState('offline')
       return
     }
-    const data = { ...Object.fromEntries(new FormData(e.currentTarget)), lang }
+    const data = { ...Object.fromEntries(new FormData(e.currentTarget)), lang, started: started.current, turnstile: token.current, client: clientInfo() }
     setState('sending')
     try {
       const res = await fetch(DECK_REQUEST_URL, {
@@ -272,7 +342,9 @@ function DeckForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      setState(res.ok ? 'sent' : 'error')
+      // 429 rate limit, 502 mail failure, 503 daily cap: point to the address instead of asking to retry.
+      setState(res.ok ? 'sent' : [429, 502, 503].includes(res.status) ? 'busy' : 'error')
+      if (!res.ok && widget.current != null) window.turnstile?.reset(widget.current)
     } catch {
       setState('error')
     }
@@ -303,16 +375,28 @@ function DeckForm() {
         <span>{f.email}</span>
         <input id="deck-email" name="email" type="email" autoComplete="email" required />
       </label>
+      {/* Decoy for bots; people never see or fill it. */}
+      <label className="hp" aria-hidden="true">
+        Website
+        <input name="website" tabIndex={-1} autoComplete="off" />
+      </label>
       <label className="field field-grow" htmlFor="deck-note">
         <span>{f.note} <em>{f.optional}</em></span>
         <textarea id="deck-note" name="note" rows="2" />
       </label>
+      <div ref={box} className="turnstile" />
       <button className="btn btn-primary" type="submit" disabled={state === 'sending'}>
         {state === 'sending' ? f.sending : f.submit}
       </button>
+      <p className="form-privacy">{f.notice}</p>
       {state === 'offline' && (
         <p className="form-note" role="status">
           {f.offlineBefore} <span className="select">{CONTACT_EMAIL}</span> {f.offlineAfter}
+        </p>
+      )}
+      {state === 'busy' && (
+        <p className="form-note" role="status">
+          {f.busyBefore} <span className="select">{CONTACT_EMAIL}</span> {f.busyAfter}
         </p>
       )}
       {state === 'error' && (

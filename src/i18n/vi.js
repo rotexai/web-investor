@@ -275,7 +275,10 @@ export default {
     sentBody: 'Chúng tôi đọc mọi tin nhắn và trả lời qua email.',
     offlineBefore: 'Biểu mẫu này chưa được kết nối. Hãy gửi email tới',
     offlineAfter: 'và chúng tôi sẽ trả lời.',
+    busyBefore: 'Hiện chưa gửi được tin nhắn. Hãy gửi email tới',
+    busyAfter: 'và chúng tôi sẽ trả lời.',
     errorBefore: 'Tin nhắn chưa được gửi. Hãy thử lại, hoặc gửi email tới',
     errorAfter: '.',
+    notice: 'Để chống thư rác, chúng tôi ghi lại địa chỉ IP, trình duyệt và thiết bị của bạn cùng tin nhắn. Thông tin này chỉ gửi tới nhà sáng lập và không được lưu trữ.',
   },
 }
