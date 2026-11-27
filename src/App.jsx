@@ -418,24 +418,237 @@ function DeckForm() {
   )
 }
 
+// Who we compete with: a 2×2 of "fits Vietnamese firms" against "owner can change it alone". Each group sits in a
+// quadrant by judgement (the copy says so); the map has no scale. Chip places are in CSS (.cm-<id>).
 function Competition() {
   const { t } = useLang()
   const c = t.competition
   return (
-    <div className="comp reveal">
-      <h3 className="h3 comp-title">{c.title}</h3>
-      <p className="lead">{c.lead}</p>
-      <ul className="comp-groups">
-        {c.groups.map((g) => (
-          <li key={g.name}>
-            <span className="label label-quiet">{g.role}</span>
-            <h4>{g.name}</h4>
-            <p>{g.line}</p>
+    <div className="comp">
+      <header className="section-head split-head reveal">
+        <div>
+          <span className="label">{c.label}</span>
+          <h2 className="h2"><Words text={c.title} /></h2>
+        </div>
+        <p className="lead split-lead">{c.lead}</p>
+      </header>
+      <div className="comp-start reveal">
+        <div>
+          <span className="label label-quiet">{c.start.label}</span>
+          <span className="comp-start-name">{c.start.name}</span>
+        </div>
+        <p>{c.start.lineBefore} <strong>{c.start.lineStrong}</strong> {c.start.lineAfter}</p>
+      </div>
+      <div className="comp-grid">
+        <figure className="cmap reveal" role="img" aria-label={c.mapAria}>
+          <span className="cmap-y"><span>{c.axisY}</span></span>
+          <span className="cmap-x"><span className="cmap-x-long">{c.axisX}</span><span className="cmap-x-short">{c.axisXShort}</span></span>
+          <div className="cmap-plot">
+            <div className="cmap-quads">
+              {['tl', 'tr', 'bl', 'br'].map((q) => <span key={q} className={`q-${q}`}><i>{c.quadrants[q]}</i></span>)}
+            </div>
+            {c.groups.map((g) => (
+              <span key={g.id} className={`cm-chip cm-${g.id}`}><b>{g.name}</b><small>{g.chip}</small></span>
+            ))}
+            <span className="cm-chip cm-us"><b><i className="dot" />RotexAI</b><small>{c.us.chip}</small></span>
+          </div>
+        </figure>
+        <ul className="comp-list reveal" style={{ '--d': '0.1s' }}>
+          {c.groups.map((g) => (
+            <li key={g.id} className={`cl cl-${g.id}`}>
+              <span className="cl-mark" aria-hidden="true" />
+              <div>
+                <span className="label label-quiet">{g.role}</span>
+                <h3>{g.name}</h3>
+                <p>{g.line}</p>
+              </div>
+            </li>
+          ))}
+          <li className="cl cl-us">
+            <span className="cl-mark" aria-hidden="true" />
+            <div>
+              <span className="label">{c.us.role}</span>
+              <h3>RotexAI</h3>
+              <p>{c.us.line}</p>
+            </div>
           </li>
-        ))}
-      </ul>
-      <p className="source">{c.source}</p>
+        </ul>
+      </div>
+      <p className="source comp-source">{c.source}</p>
     </div>
+  )
+}
+
+// Share of surveyed firms, in percent (MOIT E-commerce White Book 2022, 2021 survey). Bars are drawn to scale.
+const SOFTWARE_USE = { accounting: 88, erp: 15 }
+const AXIS_TICKS = [0, 25, 50, 75, 100]
+
+function UseBar({ label, value, gapTo, className }) {
+  return (
+    <div className={`mk-bar ${className}`}>
+      <div className="mk-bar-head"><span>{label}</span><span className="mk-bar-val">{value}%</span></div>
+      <div className="mk-track" aria-hidden="true">
+        <span className="mk-fill" style={{ width: `${value}%` }} />
+        {gapTo != null && <span className="mk-gapfill" style={{ left: `${value}%`, width: `${gapTo - value}%` }} />}
+      </div>
+    </div>
+  )
+}
+
+function Market() {
+  const { t } = useLang()
+  const m = t.market
+  const { accounting, erp } = SOFTWARE_USE
+  return (
+    <>
+      <Heading label={m.label} text={m.title} />
+      <div className="mk">
+        <div className="mk-facts reveal">
+          <p className="mk-big"><span className="mk-num">{m.size}</span><span className="mk-unit">{m.sizeUnit}</span></p>
+          <div className="mk-stats">
+            {m.stats.map((s) => <p key={s.value}><strong>{s.value}</strong><span>{s.line}</span></p>)}
+          </div>
+          <p className="mk-start"><i className="dot" aria-hidden="true" />{m.start}</p>
+        </div>
+        <figure className="mk-chart glass reveal" style={{ '--d': '0.1s' }}>
+          <figcaption>
+            <span className="label label-quiet">{m.chart.label}</span>
+            <span className="mk-chart-title">{m.chart.title}</span>
+          </figcaption>
+          <div className="mk-bars">
+            <UseBar className="mk-bar-books" label={m.chart.accounting} value={accounting} />
+            <UseBar className="mk-bar-erp" label={m.chart.erp} value={erp} gapTo={accounting} />
+            <div className="mk-axis" aria-hidden="true">
+              {AXIS_TICKS.map((v) => <span key={v} style={{ '--x': `${v}%` }}>{v === 100 ? '100%' : v}</span>)}
+            </div>
+          </div>
+          <p className="mk-gap"><span className="mk-gap-num">{accounting - erp}</span><span>{m.chart.gap}</span></p>
+        </figure>
+      </div>
+      <p className="source mk-source">{m.source}</p>
+    </>
+  )
+}
+
+// Why now: three dated reasons on a rail that runs into "Now" (across on wide screens, down the left on phones).
+function WhyNow() {
+  const { t } = useLang()
+  const w = t.whyNow
+  return (
+    <div className="wn-block">
+      <header className="section-head split-head reveal">
+        <div>
+          <span className="label">{w.label}</span>
+          <h2 className="h2"><Words text={w.title} /></h2>
+        </div>
+        <p className="lead split-lead">{w.lead}</p>
+      </header>
+      <div className="wn">
+        <ol className="wn-list">
+          {w.reasons.map((r, i) => (
+            <li key={r.date} className="wn-card glass reveal" style={{ '--d': `${0.08 * i}s` }}>
+              <div className="wn-meta"><span className="wn-date">{r.date}</span><span className="wn-tag">{r.tag}</span></div>
+              <h3>{r.title}</h3>
+              <p>{r.line}</p>
+              <span className="wn-source">{r.source}</span>
+            </li>
+          ))}
+        </ol>
+        <span className="wn-now">{w.now}</span>
+      </div>
+    </div>
+  )
+}
+
+// What the founder has shipped, in the order of people.built in the dictionary.
+const BUILT_LINKS = [
+  { href: PORTAL_URL, live: true },
+  { href: DECK_URL, live: true },
+  { href: '#film', live: false },
+]
+
+function Founder() {
+  const { t } = useLang()
+  const p = t.people
+  return (
+    <div className="founder">
+      <figure className="founder-photo reveal">
+        <img src="/media/founder-portrait.jpg" alt={p.photoAlt} width="960" height="1280" loading="lazy" />
+      </figure>
+      <Heading label={p.label} text={p.title} className="founder-head" />
+      <div className="founder-body reveal" style={{ '--d': '0.1s' }}>
+        <div className="founder-name">
+          <span className="founder-n">{p.name}</span>
+          <span className="label">{p.role}</span>
+        </div>
+        <p className="founder-bio">{p.background}</p>
+        <div className="built">
+          <span className="label label-quiet">{p.builtLabel}</span>
+          <ul>
+            {p.built.map((b, i) => {
+              const { href, live } = BUILT_LINKS[i]
+              const external = href.startsWith('http')
+              return (
+                <li key={b.name}>
+                  <a href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
+                    <span className="built-name">{b.name}{external && <span aria-hidden="true"> ↗</span>}</span>
+                    <span className="built-line">{b.line}</span>
+                  </a>
+                  <span className={live ? 'built-badge live' : 'built-badge'}>{b.badge}</span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+        <a className="person-link" href={FOUNDER_URL} target="_blank" rel="noopener">
+          {p.site} · qvanle.rotexai.com <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  )
+}
+
+// Share of the round per use of funds, in percent, in the order of round.funds in the dictionary.
+const FUND_SHARES = [40, 20, 20, 20]
+
+function Round() {
+  const { t } = useLang()
+  const r = t.round
+  const cols = FUND_SHARES.map((s) => `${s}fr`).join(' ')
+  return (
+    <>
+      <header className="section-head round-head reveal">
+        <div>
+          <span className="label">{r.label}</span>
+          <h2 className="h2"><Words text={r.title} /></h2>
+        </div>
+        <div className="round-actions">
+          <a href="#next" className="btn btn-primary">{r.talk}</a>
+          <a href={DECK_URL} className="btn btn-ghost" target="_blank" rel="noreferrer">{t.cta.deck}<span className="btn-arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+      <div className="round glass reveal">
+        <dl className="round-keys">
+          <div><dt>{r.stage}</dt><dd>{r.stageValue}</dd></div>
+          <div><dt>{r.raising}</dt><dd>{r.raisingValue} <small>{r.raisingUnit}</small></dd></div>
+          <div><dt>{r.runway}</dt><dd>{r.runwayValue}</dd></div>
+        </dl>
+        <div className="funds" style={{ '--cols': cols }}>
+          <div className="funds-head"><span className="label label-quiet">{r.fundsLabel}</span><span className="funds-total">{r.fundsTotal}</span></div>
+          <div className="funds-bar" role="img" aria-label={r.fundsAria}>
+            {r.funds.map((f, i) => (
+              <div key={f.use} className={`fb fb-${i}`}><span>{FUND_SHARES[i]}%</span><b>{f.amount}</b></div>
+            ))}
+          </div>
+          <ul className="funds-legend">
+            {r.funds.map((f, i) => (
+              <li key={f.use} className={`fl fl-${i}`}><i aria-hidden="true" /><span className="fl-use">{f.use}</span><span className="fl-detail">{f.detail}</span></li>
+            ))}
+          </ul>
+        </div>
+        <p className="round-burn"><strong>{r.burnStrong}</strong> {r.burnAfter}</p>
+      </div>
+    </>
   )
 }
 
@@ -765,9 +978,9 @@ function GlassBox() {
   )
 }
 
-function Heading({ label, text }) {
+function Heading({ label, text, className = '' }) {
   return (
-    <header className="section-head reveal">
+    <header className={`section-head reveal ${className}`.trim()}>
       <span className="label">{label}</span>
       <h2 className="h2"><Words text={text} /></h2>
     </header>
@@ -914,55 +1127,21 @@ function Page() {
         </section>
 
         <section id="market" className="section">
-          <div className="wrap split">
-            <div className="split-col">
-              <Heading label={t.market.label} text={t.market.title} />
-              <p className="figure reveal">{t.market.size}</p>
-              <p className="body reveal">{t.market.count} {t.market.countAfter}</p>
-              <p className="source reveal">{t.market.source} {t.market.sourceSlot}</p>
-            </div>
-            <div className="split-col">
-              <Heading label={t.whyNow.label} text={t.whyNow.title} />
-              <ul className="reasons reveal">
-                {t.whyNow.reasons.map((r, i) => <li key={i}>{r}</li>)}
-              </ul>
-            </div>
+          <div className="wrap">
+            <Market />
+            <WhyNow />
           </div>
         </section>
 
         <section id="team" className="section">
-          <div className="wrap split">
-            <div className="split-col">
-              <Heading label={t.people.label} text={t.people.title} />
-              <div className="person reveal">
-                <img className="avatar" src="/media/founder.jpg" alt="" width="64" height="64" loading="lazy" />
-                <div>
-                  <p className="title">{t.people.name}</p>
-                  <p className="small">{t.people.role}</p>
-                  <p className="body">{t.people.background}</p>
-                  <a className="person-link" href={FOUNDER_URL} target="_blank" rel="noopener">
-                    {t.people.site} · qvanle.rotexai.com <span aria-hidden="true">↗</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="split-col">
-              <Heading label={t.round.label} text={t.round.title} />
-              <dl className="terms reveal">
-                <div><dt>{t.round.stage}</dt><dd>{t.round.stageValue}</dd></div>
-                <div><dt>{t.round.raising}</dt><dd>{t.round.raisingValue}</dd></div>
-                <div>
-                  <dt>{t.round.funds}</dt>
-                  <dd>
-                    <ul className="funds">
-                      {t.round.fundsValue.map((f) => (
-                        <li key={f.use}><span>{f.use}</span><span className="funds-amount">{f.amount}</span></li>
-                      ))}
-                    </ul>
-                  </dd>
-                </div>
-              </dl>
-            </div>
+          <div className="wrap">
+            <Founder />
+          </div>
+        </section>
+
+        <section id="round" className="section section-tight">
+          <div className="wrap">
+            <Round />
           </div>
         </section>
 
