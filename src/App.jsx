@@ -299,9 +299,10 @@ function DeckForm() {
   const widget = useRef(null)
   const token = useRef('')
 
-  // Render time, for the Worker's too-fast-to-be-human check.
+  // Render time on the page's own monotonic clock, for the Worker's too-fast-to-be-human check: the fill time is
+  // measured here, because the visitor's wall clock can be minutes off the Worker's.
   useEffect(() => {
-    started.current = Date.now()
+    started.current = performance.now()
   }, [])
 
   useEffect(() => {
@@ -334,19 +335,27 @@ function DeckForm() {
       setState('offline')
       return
     }
-    const data = { ...Object.fromEntries(new FormData(e.currentTarget)), lang, started: started.current, turnstile: token.current, client: clientInfo() }
+    const elapsed = Math.round(performance.now() - started.current)
+    // `started` (wall-clock render time) keeps a Worker deployed before `elapsed` working.
+    const data = { ...Object.fromEntries(new FormData(e.currentTarget)), lang, elapsed, started: Date.now() - elapsed, turnstile: token.current, client: clientInfo() }
     setState('sending')
+    let sent = false
     try {
       const res = await fetch(DECK_REQUEST_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
+      sent = res.ok
       // 429 rate limit, 502 mail failure, 503 daily cap: point to the address instead of asking to retry.
       setState(res.ok ? 'sent' : [429, 502, 503].includes(res.status) ? 'busy' : 'error')
-      if (!res.ok && widget.current != null) window.turnstile?.reset(widget.current)
     } catch {
       setState('error')
+    }
+    // A token works once, and a dropped connection may already have spent it: get a fresh one before a retry.
+    if (!sent && widget.current != null) {
+      token.current = ''
+      window.turnstile?.reset(widget.current)
     }
   }
 
@@ -364,16 +373,16 @@ function DeckForm() {
       <div className="field-row">
         <label className="field" htmlFor="deck-name">
           <span>{f.name}</span>
-          <input id="deck-name" name="name" autoComplete="name" required />
+          <input id="deck-name" name="name" autoComplete="name" maxLength={120} required />
         </label>
         <label className="field" htmlFor="deck-firm">
           <span>{f.firm}</span>
-          <input id="deck-firm" name="firm" autoComplete="organization" required />
+          <input id="deck-firm" name="firm" autoComplete="organization" maxLength={160} required />
         </label>
       </div>
       <label className="field" htmlFor="deck-email">
         <span>{f.email}</span>
-        <input id="deck-email" name="email" type="email" autoComplete="email" required />
+        <input id="deck-email" name="email" type="email" autoComplete="email" maxLength={254} required />
       </label>
       {/* Decoy for bots; people never see or fill it. */}
       <label className="hp" aria-hidden="true">
@@ -382,7 +391,8 @@ function DeckForm() {
       </label>
       <label className="field field-grow" htmlFor="deck-note">
         <span>{f.note} <em>{f.optional}</em></span>
-        <textarea id="deck-note" name="note" rows="2" />
+        {/* Field limits match the Worker's (spec 261118): a longer note would be refused, not cut. */}
+        <textarea id="deck-note" name="note" rows="2" maxLength={2000} />
       </label>
       <div ref={box} className="turnstile" />
       <button className="btn btn-primary" type="submit" disabled={state === 'sending'}>

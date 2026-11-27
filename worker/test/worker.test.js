@@ -153,7 +153,22 @@ describe('investor contact worker (spec 261118)', () => {
     expect((await run(req({ ...good, website: 'http://spam' }))).status).toBe(200)
     expect((await run(req({ ...good, started: NOW - 1000 }))).status).toBe(200)
     expect((await run(req({ ...good, started: undefined }))).status).toBe(200)
+    expect((await run(req({ ...good, elapsed: 1000 }))).status).toBe(200)
+    expect((await run(req({ ...good, elapsed: 'soon', started: undefined }))).status).toBe(200)
     expect(mailerSend).not.toHaveBeenCalled()
+  })
+
+  it('R6: the fill time is the one the page measured, so a visitor clock 5 minutes fast still sends', async () => {
+    const skewed = { ...good, started: NOW + 5 * 60_000 - 120_000, elapsed: 120_000 }
+    expect((await run(req(skewed))).status).toBe(200)
+    expect(mailerSend).toHaveBeenCalledTimes(1)
+    expect(mailerSend.mock.calls[0][1].text).toContain('120 seconds')
+  })
+
+  it('R7: a 2,000-character note with CRLF line breaks passes, as the page maxLength allows it', async () => {
+    const note = 'x'.repeat(999) + '\r\n' + 'x'.repeat(1000) // 2,001 sent, 2,000 once CRLF counts as one
+    expect((await run(req({ ...good, note }))).status).toBe(200)
+    expect((await run(req({ ...good, note: note + 'x' }))).status).toBe(400)
   })
 
   it('R7: bad fields get 400, a large body 413, and header fields lose CR and LF', async () => {

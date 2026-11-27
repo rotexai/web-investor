@@ -24,19 +24,30 @@ const EMAIL = /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[^\s@<>()",;:]{2,}$/
 
 /** The form fields after validation, or the name of the first bad field. */
 export function readForm(body) {
+  // Line breaks count once, as the page's maxLength counts them, whether the browser sent LF or CRLF.
+  const note = String(body.note ?? '').replace(/\r\n?/g, '\n')
   const f = {
     name: clean(body.name, 120),
     firm: clean(body.firm, 160),
     email: clean(body.email, 254),
     // The note keeps its line breaks; it only goes in the body, never in a header.
-    note: String(body.note ?? '').replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '').trim().slice(0, 2000),
+    note: note.replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '').trim().slice(0, 2000),
     lang: body.lang === 'vi' ? 'vi' : 'en',
   }
   if (!f.name) return { error: 'name' }
   if (!f.firm) return { error: 'firm' }
   if (!EMAIL.test(f.email)) return { error: 'email' }
-  if (String(body.note ?? '').length > 2000) return { error: 'note' }
+  if (note.length > 2000) return { error: 'note' }
   return { form: f }
+}
+
+/** Milliseconds between form render and submit. The page measures it itself (`elapsed`), so a visitor whose clock
+ *  is off is not taken for a bot. A page older than `elapsed` sends only its render time (`started`), which compares
+ *  the visitor's clock with ours. NaN when neither is usable. */
+export function fillMs(body, now) {
+  if (typeof body.elapsed === 'number' && Number.isFinite(body.elapsed)) return body.elapsed
+  const started = Number(body.started)
+  return Number.isFinite(started) ? now - started : NaN
 }
 
 function cors(origin) {
@@ -128,8 +139,8 @@ export async function handle(request, env, deps = {}) {
   if (!body || typeof body !== 'object') return reply(400, { error: 'json' }, ok)
 
   // Bots: a filled decoy field or a too-fast submit looks like success and sends nothing.
-  const started = Number(body.started)
-  if (body.website || !Number.isFinite(started) || now() - started < MIN_FILL_MS) return reply(200, { ok: true }, ok)
+  const fill = fillMs(body, now())
+  if (body.website || !(fill >= MIN_FILL_MS)) return reply(200, { ok: true }, ok)
 
   const { form, error } = readForm(body)
   if (error) return reply(400, { error }, ok)
@@ -152,7 +163,7 @@ export async function handle(request, env, deps = {}) {
   const sig = collect(request, body, {
     now: now(),
     today: sentToday + 1,
-    fillSeconds: Math.round((now() - started) / 1000),
+    fillSeconds: Math.round(fill / 1000),
     turnstileAt: typeof check.challenge_ts === 'string' ? check.challenge_ts : '',
     mx: await (deps.mailDomainOk ?? mailDomainOk)(form.email.split('@')[1]),
   })
